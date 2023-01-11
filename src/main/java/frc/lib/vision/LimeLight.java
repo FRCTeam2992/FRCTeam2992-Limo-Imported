@@ -2,6 +2,7 @@
 package frc.lib.vision;
 
 import edu.wpi.first.math.filter.MedianFilter;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -190,16 +191,16 @@ public class LimeLight {
     public void setLedMode(LedMode mode) {
         switch (mode) {
         case Off:
-            ledMode.forceSetDouble(1);
+            ledMode.getDouble(1);
             break;
         case Pipeline:
-            ledMode.forceSetDouble(0);
+            ledMode.getDouble(0);
             break;
         case On:
-            ledMode.forceSetDouble(3);
+            ledMode.getDouble(3);
             break;
         case Blink:
-            ledMode.forceSetDouble(2);
+            ledMode.getDouble(2);
             break;
         }
     }
@@ -210,10 +211,10 @@ public class LimeLight {
     public void setCameraMode(CameraMode mode) {
         switch (mode) {
         case Driver:
-            camMode.forceSetDouble(1);
+            camMode.getDouble(1);
             break;
         case Vision:
-            camMode.forceSetDouble(0);
+            camMode.getDouble(0);
             break;
         }
     }
@@ -223,7 +224,7 @@ public class LimeLight {
      */
     public void setActivePipline(int pipelineNumber) {
         if (pipelineNumber >= 0 && pipelineNumber <= 9) {
-            pipeline.forceSetDouble(pipelineNumber);
+            pipeline.getDouble(pipelineNumber);
         }
     }
 
@@ -233,13 +234,13 @@ public class LimeLight {
     public void setStreamMode(StreamMode mode) {
         switch (mode) {
         case Standard:
-            stream.forceSetDouble(0);
+            stream.getDouble(0);
             break;
         case PiPMain:
-            stream.forceSetDouble(1);
+            stream.getDouble(1);
             break;
         case PiPSecondary:
-            stream.forceSetDouble(2);
+            stream.getDouble(2);
             break;
         }
     }
@@ -249,9 +250,9 @@ public class LimeLight {
      */
     public void setTakeSnapshots(boolean toggleSnapshots) {
         if (toggleSnapshots) {
-            snapshot.forceSetDouble(1);
+            snapshot.getDouble(1);
         } else {
-            snapshot.forceSetDouble(0);
+            snapshot.getDouble(0);
         }
     }
 

@@ -17,15 +17,15 @@ public class TriggerButton extends Trigger {
         this.hand = hand;
     }
 
-    @Override
-    public boolean get() {
-        if (hand == 'l') {
-            return Math.abs(controller.getLeftTriggerAxis()) >= threshhold;
-        } else if(hand == 'r'){
-            return Math.abs(controller.getRightTriggerAxis()) >= threshhold;
-        } else {
-            return false;
-        }
-    }
+    // @Override
+    // public boolean get() {
+    //     if (hand == 'l') {
+    //         return Math.abs(controller.getLeftTriggerAxis()) >= threshhold;
+    //     } else if(hand == 'r'){
+    //         return Math.abs(controller.getRightTriggerAxis()) >= threshhold;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
 }
