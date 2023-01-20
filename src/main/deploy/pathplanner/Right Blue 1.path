@@ -1,0 +1,97 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 1.7843766596624102,
+        "y": 0.4645784746114955
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.7843766596624118,
+        "y": 0.4645784746114955
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.594130279169649,
+        "y": 1.0020320040640094
+      },
+      "prevControl": {
+        "x": 5.364363728727457,
+        "y": 1.1022352044704111
+      },
+      "nextControl": {
+        "x": 5.364363728727457,
+        "y": 1.1022352044704111
+      },
+      "holonomicAngle": 0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.7843766596624102,
+        "y": 1.0384695314845178
+      },
+      "prevControl": {
+        "x": 3.059690119380239,
+        "y": 1.0566882951947734
+      },
+      "nextControl": null,
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "maxVelocity": null,
+  "maxAcceleration": null,
+  "isReversed": false,
+  "markers": [
+    {
+      "position": 0.0,
+      "names": [
+        "event"
+      ]
+    },
+    {
+      "position": 0.0,
+      "names": [
+        "event"
+      ]
+    },
+    {
+      "position": 2.0,
+      "names": [
+        "event",
+        "pause"
+      ]
+    }
+  ]
+}

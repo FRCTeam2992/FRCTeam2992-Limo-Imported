@@ -13,6 +13,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Nat;
@@ -24,6 +30,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DSControlWord;
@@ -32,6 +39,8 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.drive.swerve.SwerveController;
 import frc.lib.drive.swerve.SwerveModuleFalconFalcon;
@@ -98,20 +107,27 @@ public class Drivetrain extends SubsystemBase {
   // Swerve Drive Odometry
   public final SwerveDriveOdometry swerveDriveOdometry;
   public final SwerveDrivePoseEstimator swerveDrivePoseEstimator;
-  public SwerveModulePosition[] swerveDriveModulePositions;
+  public SwerveModulePosition[] swerveDriveModulePositions = {
+    new SwerveModulePosition(),
+    new SwerveModulePosition(),
+    new SwerveModulePosition(),
+    new SwerveModulePosition()
+  };
 
   public Transform2d moved;
 
   // // Swerve Pose
 
   // Motion Trajectories
-  public Trajectory testPathTrajectory;
+  // public Trajectory testPathTrajectory;
   public Trajectory threeBallMainTrajectory;
   public Trajectory fiveBallFinalTrajectory;
   public Trajectory twoBallTrajectory;
   public Trajectory threeBallForFiveTrajectory;
   public Trajectory fiveBallFinalPart1Trajectory;
   public Trajectory fiveBallFinalPart2Trajectory;
+
+  public PathPlannerTrajectory testPath;
 
   // DriveTrain Dashboard Update Counter
   private int dashboardCounter = 0;
@@ -243,13 +259,14 @@ public class Drivetrain extends SubsystemBase {
     // Swerve Controller
     swerveController = new SwerveController(Constants.swerveLength, Constants.swerveWidth);
 
+    // robot gyro initialization
+    navx = new AHRS(SPI.Port.kMXP);
+
     swerveDriveModulePositions[0] = frontLeftModule.getPosition();
     swerveDriveModulePositions[1] = frontRightModule.getPosition();
     swerveDriveModulePositions[2] = rearLeftModule.getPosition();
     swerveDriveModulePositions[3] = rearRightModule.getPosition();
 
-    // robot gyro initialization
-    navx = new AHRS(SPI.Port.kMXP);
 
     // Swerve Drive Kinematics
     swerveDriveKinematics = new SwerveDriveKinematics(Constants.frontLeftLocation,
@@ -326,10 +343,14 @@ public class Drivetrain extends SubsystemBase {
 
     // Update the Odometry
     // if (DriverStation.isAutonomous()) {
-    priorSwervePose = latestSwervePose;
-    latestSwervePose = swerveDriveOdometry.update(
+      swerveDriveModulePositions[0] = frontLeftModule.getPosition();
+      swerveDriveModulePositions[1] = frontRightModule.getPosition();
+      swerveDriveModulePositions[2] = rearLeftModule.getPosition();
+      swerveDriveModulePositions[3] = rearRightModule.getPosition();
+  
+      latestSwervePose = swerveDriveOdometry.update(
         Rotation2d.fromDegrees(-getGyroYaw()), swerveDriveModulePositions);
-    moved = latestSwervePose.minus(priorSwervePose);
+  
     // }
     // else {
 
@@ -424,6 +445,11 @@ public class Drivetrain extends SubsystemBase {
     // Rotation2d.fromDegrees(-getGyroYaw()));
   }
 
+  public void resetOdometryToPose(Pose2d initialPose){
+    swerveDriveOdometry.resetPosition(Rotation2d.fromDegrees(-getGyroYaw()), swerveDriveModulePositions, initialPose);
+
+  }
+
   public void resetPoseEstimate() {
     // swerveDriveOdometry.resetPosition(new Pose2d(0.0, 0.0, new Rotation2d()),
     // Rotation2d.fromDegrees(-getGyroYaw()));
@@ -479,7 +505,7 @@ public class Drivetrain extends SubsystemBase {
 
   private void loadMotionPaths() {
     // Trajectory Paths
-    Path testPath = Filesystem.getDeployDirectory().toPath().resolve("output/TestPath.wpilib.json");
+    // Path testPath = Filesystem.getDeployDirectory().toPath().resolve("output/TestPath.wpilib.json");
     Path threeBallPathMain = Filesystem.getDeployDirectory().toPath().resolve("output/ThreeBallPathMain.wpilib.json");
     Path fiveBallPath = Filesystem.getDeployDirectory().toPath().resolve("output/FiveBallPathFinal.wpilib.json");
     Path twoBallPath = Filesystem.getDeployDirectory().toPath().resolve("output/TwoBallPath.wpilib.json");
@@ -488,14 +514,20 @@ public class Drivetrain extends SubsystemBase {
     Path fiveBallPathPart1 = Filesystem.getDeployDirectory().toPath().resolve("output/FiveBallPathPart1.wpilib.json");
     Path fiveBallPathPart2 = Filesystem.getDeployDirectory().toPath().resolve("output/FiveBallPathPart2.wpilib.json");
 
+
+    
+
     try {
-      testPathTrajectory = TrajectoryUtil.fromPathweaverJson(testPath);
+      // testPathTrajectory = TrajectoryUtil.fromPathweaverJson(testPath);
       threeBallMainTrajectory = TrajectoryUtil.fromPathweaverJson(threeBallPathMain);
       fiveBallFinalTrajectory = TrajectoryUtil.fromPathweaverJson(fiveBallPath);
       twoBallTrajectory = TrajectoryUtil.fromPathweaverJson(twoBallPath);
       threeBallForFiveTrajectory = TrajectoryUtil.fromPathweaverJson(threeBallPathForFive);
       fiveBallFinalPart1Trajectory = TrajectoryUtil.fromPathweaverJson(fiveBallPathPart1);
       fiveBallFinalPart2Trajectory = TrajectoryUtil.fromPathweaverJson(fiveBallPathPart2);
+
+      testPath = PathPlanner.loadPath("Test Path", new PathConstraints(4, 3));
+
     } catch (IOException e) {
       DriverStation.reportError("Unable to load motion trajectories!", e.getStackTrace());
       e.printStackTrace();
@@ -535,4 +567,37 @@ public class Drivetrain extends SubsystemBase {
     return pitchChange;
   }
 
+  public Pose2d getLatestSwervePose(){
+    return latestSwervePose;
+  }
+
+  public void setModuleStates(SwerveModuleState[] states){
+    frontLeftModule.setState(states[0]);
+    frontRightModule.setState(states[1]);
+    rearLeftModule.setState(states[2]);
+    rearRightModule.setState(states[3]);
+
+  }
+
+  public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+    return new SequentialCommandGroup(
+         new InstantCommand(() -> {
+           // Reset odometry for the first path you run during auto
+           if(isFirstPath){
+               this.resetOdometryToPose(traj.getInitialHolonomicPose());
+           }
+         }),
+         new PPSwerveControllerCommand(
+             traj, 
+             this::getLatestSwervePose, // Pose supplier
+             this.swerveDriveKinematics, // SwerveDriveKinematics
+             new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+             new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
+             new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+             this::setModuleStates, // Module states consumer
+             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+             this // Requires this drive subsystem
+         )
+     );
+ }
 }
