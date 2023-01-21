@@ -88,6 +88,13 @@ public class LimeLight {
         PiPSecondary
     }
 
+    public enum PipelineMode {
+        // April Tags
+        AprilTag,
+        // Retroreflective
+        Retroreflective
+    }
+
     /**
      * Uses the LimeLight's default network table name ("limelight").
      */
@@ -133,7 +140,7 @@ public class LimeLight {
         }
     }
 
-    public void resetMedianFilters(){
+    public void resetMedianFilters() {
         xFilter.reset();
         yFilter.reset();
     }
@@ -141,10 +148,10 @@ public class LimeLight {
     /**
      * @return the X offset value from the crosshair to the target in degrees.
      */
-    public double getTargetXOffset() { 
-      xMedian = xFilter.calculate(tx.getDouble(0));
-       return xMedian ;
-     //return tx.getDouble(0);
+    public double getTargetXOffset() {
+        xMedian = xFilter.calculate(tx.getDouble(0));
+        return xMedian;
+        // return tx.getDouble(0);
     }
 
     /**
@@ -190,18 +197,18 @@ public class LimeLight {
      */
     public void setLedMode(LedMode mode) {
         switch (mode) {
-        case Off:
-            ledMode.getDouble(1);
-            break;
-        case Pipeline:
-            ledMode.getDouble(0);
-            break;
-        case On:
-            ledMode.getDouble(3);
-            break;
-        case Blink:
-            ledMode.getDouble(2);
-            break;
+            case Off:
+                ledMode.getDouble(1);
+                break;
+            case Pipeline:
+                ledMode.getDouble(0);
+                break;
+            case On:
+                ledMode.getDouble(3);
+                break;
+            case Blink:
+                ledMode.getDouble(2);
+                break;
         }
     }
 
@@ -210,12 +217,12 @@ public class LimeLight {
      */
     public void setCameraMode(CameraMode mode) {
         switch (mode) {
-        case Driver:
-            camMode.getDouble(1);
-            break;
-        case Vision:
-            camMode.getDouble(0);
-            break;
+            case Driver:
+                camMode.getDouble(1);
+                break;
+            case Vision:
+                camMode.getDouble(0);
+                break;
         }
     }
 
@@ -233,15 +240,15 @@ public class LimeLight {
      */
     public void setStreamMode(StreamMode mode) {
         switch (mode) {
-        case Standard:
-            stream.getDouble(0);
-            break;
-        case PiPMain:
-            stream.getDouble(1);
-            break;
-        case PiPSecondary:
-            stream.getDouble(2);
-            break;
+            case Standard:
+                stream.getDouble(0);
+                break;
+            case PiPMain:
+                stream.getDouble(1);
+                break;
+            case PiPSecondary:
+                stream.getDouble(2);
+                break;
         }
     }
 
@@ -268,5 +275,16 @@ public class LimeLight {
 
     public double getCameraAngle(double distance, double targetHeight, double cameraHeight) {
         return (Math.toDegrees(Math.atan((targetHeight - cameraHeight) / distance)) + getTargetYOffset());
+    }
+
+    public void setPipelineMode(PipelineMode pipeline) {
+        switch (pipeline) {
+            case AprilTag:
+                setActivePipline(1);
+                break;
+            case Retroreflective:
+                setActivePipline(0);
+                break;
+        }
     }
 }

@@ -54,6 +54,8 @@ public class AutoFollowPath extends CommandBase {
 
   private ProfiledPIDController thetaController;
 
+  
+
   public AutoFollowPath(Drivetrain subsystem, SwerveTrajectory swerveTrajectory, boolean resetOdometry,
         boolean setGyroOffset, double gyroOffset) {
     // Subsystem Instance

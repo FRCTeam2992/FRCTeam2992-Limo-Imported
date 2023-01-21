@@ -23,8 +23,10 @@ import frc.lib.oi.controller.TriggerButton;
 import frc.robot.commands.groups.AutoIntake;
 import frc.robot.commands.groups.AutoShoot;
 import frc.robot.commands.groups.DejamBallPath;
+import frc.robot.commands.groups.FollowTrajectoryCommand;
 import frc.robot.commands.groups.PanicIntake;
 import frc.robot.commands.groups.StopAutoIntake;
+// import frc.robot.paths.TestPath;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,6 +36,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -104,7 +108,7 @@ public class RobotContainer {
     mTurret.setDefaultCommand(new TurretSticks(mTurret, mClimb));
   
     mShooterHood = new ShooterHood();
-    mShooterHood.setDefaultCommand(new HoldHoodAngle(mShooterHood, mTurret, cargoBallInterpolator ));
+    mShooterHood.setDefaultCommand(new HoldHoodAngle(mShooterHood, mTurret, cargoBallInterpolator));
     
     mShooter = new Shooter();
     mShooter.setDefaultCommand(new DefaultShooter(mShooter, mTurret, cargoBallInterpolator));
@@ -291,6 +295,7 @@ public class RobotContainer {
       climbModeOnButton.whenPressed(new ClimbModeOn(mClimb, mIntakeDeploy, mIntake, mDrivetrain));
       climbModeOnButton.whenPressed(new MoveTurretToAngle(mTurret, 180));
 
+
       // JoystickButton reverseIntakeButton = new JoystickButton(controller1, XboxController.Button.kRightStick.value);
       // reverseIntakeButton.whenPressed(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mTopLift, mIntakeDeploy, false));
 
@@ -299,7 +304,7 @@ public class RobotContainer {
   /*
   SmartDashBoard Buttons
   */
-      // SmartDashboard.putData("0 Wheels", new SetSwerveAngle(mDrivetrain, 0, 0, 0, 0));
+      SmartDashboard.putData("0 Wheels", new SetSwerveAngle(mDrivetrain, 0, 0, 0, 0));
       // SmartDashboard.putData("90 Wheels", new SetSwerveAngle(mDrivetrain, 90, 90, 90, 90));
       // SmartDashboard.putData("180 Wheels", new SetSwerveAngle(mDrivetrain, 180, 180, 180, 180));
       // SmartDashboard.putData("270 Wheels", new SetSwerveAngle(mDrivetrain, 270, 270, 270, 270));
@@ -319,6 +324,14 @@ public class RobotContainer {
       SmartDashboard.putData("Turret 180", new MoveTurretToAngle(mTurret, 180));
       
       SmartDashboard.putData("Reset Odometry", new ResetOdometry(mDrivetrain));
+
+      // Command testPathCommand = mDrivetrain.followTrajectoryCommand(mDrivetrain.testPath, false);
+
+      SmartDashboard.putData("Test Path Planner Path", new FollowTrajectoryCommand(mDrivetrain, mDrivetrain.testPath, false));
+
+      SmartDashboard.putData("Drive Straight", new FollowTrajectoryCommand(mDrivetrain, mDrivetrain.driveStaight, false));
+
+      
 
       // SmartDashboard.putData("0 Hood", new NewHoodTarget(mShooterHood, 0.0));
       // SmartDashboard.putData("120 Hood", new NewHoodTarget(mShooterHood, 120.0));

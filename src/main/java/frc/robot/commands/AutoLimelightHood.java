@@ -24,7 +24,7 @@ public class AutoLimelightHood extends CommandBase {
 
     mInterpolator = interpolator;
   }
-
+ 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
