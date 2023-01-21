@@ -108,10 +108,10 @@ public class Drivetrain extends SubsystemBase {
   public final SwerveDriveOdometry swerveDriveOdometry;
   public final SwerveDrivePoseEstimator swerveDrivePoseEstimator;
   public SwerveModulePosition[] swerveDriveModulePositions = {
-    new SwerveModulePosition(),
-    new SwerveModulePosition(),
-    new SwerveModulePosition(),
-    new SwerveModulePosition()
+      new SwerveModulePosition(),
+      new SwerveModulePosition(),
+      new SwerveModulePosition(),
+      new SwerveModulePosition()
   };
 
   public Transform2d moved;
@@ -128,6 +128,7 @@ public class Drivetrain extends SubsystemBase {
   public Trajectory fiveBallFinalPart2Trajectory;
 
   public PathPlannerTrajectory testPath;
+  public PathPlannerTrajectory driveStaight;
 
   // DriveTrain Dashboard Update Counter
   private int dashboardCounter = 0;
@@ -267,7 +268,6 @@ public class Drivetrain extends SubsystemBase {
     swerveDriveModulePositions[2] = rearLeftModule.getPosition();
     swerveDriveModulePositions[3] = rearRightModule.getPosition();
 
-
     // Swerve Drive Kinematics
     swerveDriveKinematics = new SwerveDriveKinematics(Constants.frontLeftLocation,
         Constants.frontRightLocation,
@@ -343,36 +343,37 @@ public class Drivetrain extends SubsystemBase {
 
     // Update the Odometry
     // if (DriverStation.isAutonomous()) {
-      swerveDriveModulePositions[0] = frontLeftModule.getPosition();
-      swerveDriveModulePositions[1] = frontRightModule.getPosition();
-      swerveDriveModulePositions[2] = rearLeftModule.getPosition();
-      swerveDriveModulePositions[3] = rearRightModule.getPosition();
-  
-      latestSwervePose = swerveDriveOdometry.update(
+    swerveDriveModulePositions[0] = frontLeftModule.getPosition();
+    swerveDriveModulePositions[1] = frontRightModule.getPosition();
+    swerveDriveModulePositions[2] = rearLeftModule.getPosition();
+    swerveDriveModulePositions[3] = rearRightModule.getPosition();
+
+    priorSwervePose = latestSwervePose;
+
+    latestSwervePose = swerveDriveOdometry.update(
         Rotation2d.fromDegrees(-getGyroYaw()), swerveDriveModulePositions);
-  
+
     // }
     // else {
-
     // priorSwervePoseEstimate = latestSwervePoseEstimate;
     // latestSwervePoseEstimate = swerveDrivePoseEstimator.updateWithTime(
     // Timer.getFPGATimestamp(), Rotation2d.fromDegrees(-getGyroYaw()),
     // frontLeftModule.getState(), frontRightModule.getState(),
     // rearLeftModule.getState(), rearRightModule.getState());
 
-    // moved = latestSwervePoseEstimate.minus(priorSwervePoseEstimate);
+    moved = latestSwervePose.minus(priorSwervePose);
     // }
 
     distanceTraveled = Math.sqrt(moved.getX() * moved.getX() + moved.getY() * moved.getY());
     angleTurned = Math.abs(moved.getRotation().getDegrees());
 
     // Display Odometry
-    // SmartDashboard.putNumber("Odometry Rotation",
-    // latestSwervePose.getRotation().getDegrees());
-    // SmartDashboard.putNumber("Odometry X", (latestSwervePose.getX() * (100 /
-    // 2.54)));
-    // SmartDashboard.putNumber("Odometry Y", (latestSwervePose.getY() * (100 /
-    // 2.54)));
+    SmartDashboard.putNumber("Odometry Rotation",
+    latestSwervePose.getRotation().getDegrees());
+    SmartDashboard.putNumber("Odometry X", (latestSwervePose.getX() * (100 /
+    2.54)));
+    SmartDashboard.putNumber("Odometry Y", (latestSwervePose.getY() * (100 /
+    2.54)));
 
     // SmartDashboard.putNumber("Estimation Rotation",
     // latestSwervePoseEstimate.getRotation().getDegrees());
@@ -445,7 +446,7 @@ public class Drivetrain extends SubsystemBase {
     // Rotation2d.fromDegrees(-getGyroYaw()));
   }
 
-  public void resetOdometryToPose(Pose2d initialPose){
+  public void resetOdometryToPose(Pose2d initialPose) {
     swerveDriveOdometry.resetPosition(Rotation2d.fromDegrees(-getGyroYaw()), swerveDriveModulePositions, initialPose);
 
   }
@@ -505,7 +506,8 @@ public class Drivetrain extends SubsystemBase {
 
   private void loadMotionPaths() {
     // Trajectory Paths
-    // Path testPath = Filesystem.getDeployDirectory().toPath().resolve("output/TestPath.wpilib.json");
+    // Path testPath =
+    // Filesystem.getDeployDirectory().toPath().resolve("output/TestPath.wpilib.json");
     Path threeBallPathMain = Filesystem.getDeployDirectory().toPath().resolve("output/ThreeBallPathMain.wpilib.json");
     Path fiveBallPath = Filesystem.getDeployDirectory().toPath().resolve("output/FiveBallPathFinal.wpilib.json");
     Path twoBallPath = Filesystem.getDeployDirectory().toPath().resolve("output/TwoBallPath.wpilib.json");
@@ -513,9 +515,6 @@ public class Drivetrain extends SubsystemBase {
         .resolve("output/ThreeBallPathForFive.wpilib.json");
     Path fiveBallPathPart1 = Filesystem.getDeployDirectory().toPath().resolve("output/FiveBallPathPart1.wpilib.json");
     Path fiveBallPathPart2 = Filesystem.getDeployDirectory().toPath().resolve("output/FiveBallPathPart2.wpilib.json");
-
-
-    
 
     try {
       // testPathTrajectory = TrajectoryUtil.fromPathweaverJson(testPath);
@@ -526,7 +525,8 @@ public class Drivetrain extends SubsystemBase {
       fiveBallFinalPart1Trajectory = TrajectoryUtil.fromPathweaverJson(fiveBallPathPart1);
       fiveBallFinalPart2Trajectory = TrajectoryUtil.fromPathweaverJson(fiveBallPathPart2);
 
-      testPath = PathPlanner.loadPath("Test Path", new PathConstraints(4, 3));
+      testPath = PathPlanner.loadPath("Test Path", new PathConstraints(2, 1.5));
+      driveStaight = PathPlanner.loadPath("Drive Straight", new PathConstraints(2, 1.5));
 
     } catch (IOException e) {
       DriverStation.reportError("Unable to load motion trajectories!", e.getStackTrace());
@@ -567,11 +567,11 @@ public class Drivetrain extends SubsystemBase {
     return pitchChange;
   }
 
-  public Pose2d getLatestSwervePose(){
+  public Pose2d getLatestSwervePose() {
     return latestSwervePose;
   }
 
-  public void setModuleStates(SwerveModuleState[] states){
+  public void setModuleStates(SwerveModuleState[] states) {
     frontLeftModule.setState(states[0]);
     frontRightModule.setState(states[1]);
     rearLeftModule.setState(states[2]);
@@ -581,23 +581,25 @@ public class Drivetrain extends SubsystemBase {
 
   public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
     return new SequentialCommandGroup(
-         new InstantCommand(() -> {
-           // Reset odometry for the first path you run during auto
-           if(isFirstPath){
-               this.resetOdometryToPose(traj.getInitialHolonomicPose());
-           }
-         }),
-         new PPSwerveControllerCommand(
-             traj, 
-             this::getLatestSwervePose, // Pose supplier
-             this.swerveDriveKinematics, // SwerveDriveKinematics
-             new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-             new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
-             new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-             this::setModuleStates, // Module states consumer
-             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-             this // Requires this drive subsystem
-         )
-     );
- }
+        new InstantCommand(() -> {
+          // Reset odometry for the first path you run during auto
+          if (isFirstPath) {
+            this.resetOdometryToPose(traj.getInitialHolonomicPose());
+          }
+        }),
+        new PPSwerveControllerCommand(
+            traj,
+            this::getLatestSwervePose, // Pose supplier
+            this.swerveDriveKinematics, // SwerveDriveKinematics
+            new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use
+                                        // feedforwards.
+            new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
+            new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will
+                                        // only use feedforwards.
+            this::setModuleStates, // Module states consumer
+            true, // Should the path be automatically mirrored depending on alliance color.
+                  // Optional, defaults to true
+            this // Requires this drive subsystem
+        ));
+  }
 }

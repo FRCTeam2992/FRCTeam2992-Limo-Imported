@@ -23,6 +23,7 @@ import frc.lib.oi.controller.TriggerButton;
 import frc.robot.commands.groups.AutoIntake;
 import frc.robot.commands.groups.AutoShoot;
 import frc.robot.commands.groups.DejamBallPath;
+import frc.robot.commands.groups.FollowTrajectoryCommand;
 import frc.robot.commands.groups.PanicIntake;
 import frc.robot.commands.groups.StopAutoIntake;
 // import frc.robot.paths.TestPath;
@@ -303,7 +304,7 @@ public class RobotContainer {
   /*
   SmartDashBoard Buttons
   */
-      // SmartDashboard.putData("0 Wheels", new SetSwerveAngle(mDrivetrain, 0, 0, 0, 0));
+      SmartDashboard.putData("0 Wheels", new SetSwerveAngle(mDrivetrain, 0, 0, 0, 0));
       // SmartDashboard.putData("90 Wheels", new SetSwerveAngle(mDrivetrain, 90, 90, 90, 90));
       // SmartDashboard.putData("180 Wheels", new SetSwerveAngle(mDrivetrain, 180, 180, 180, 180));
       // SmartDashboard.putData("270 Wheels", new SetSwerveAngle(mDrivetrain, 270, 270, 270, 270));
@@ -326,7 +327,11 @@ public class RobotContainer {
 
       // Command testPathCommand = mDrivetrain.followTrajectoryCommand(mDrivetrain.testPath, false);
 
-      SmartDashboard.putData("Test Path Planner Path", (Sendable) mDrivetrain.followTrajectoryCommand(mDrivetrain.testPath, false));
+      SmartDashboard.putData("Test Path Planner Path", new FollowTrajectoryCommand(mDrivetrain, mDrivetrain.testPath, false));
+
+      SmartDashboard.putData("Drive Straight", new FollowTrajectoryCommand(mDrivetrain, mDrivetrain.driveStaight, false));
+
+      
 
       // SmartDashboard.putData("0 Hood", new NewHoodTarget(mShooterHood, 0.0));
       // SmartDashboard.putData("120 Hood", new NewHoodTarget(mShooterHood, 120.0));
