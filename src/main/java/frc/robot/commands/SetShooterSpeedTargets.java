@@ -13,10 +13,10 @@ public class SetShooterSpeedTargets extends CommandBase {
   private double mMainSpeed;
   private double mSecondarySpeed;
 
-  public SetShooterSpeedTargets (Shooter subsystem, double mainSpeed, double secondarySpeed) {
+  public SetShooterSpeedTargets(Shooter subsystem, double mainSpeed, double secondarySpeed) {
     mShooter = subsystem;
     mMainSpeed = mainSpeed;
-    mSecondarySpeed = secondarySpeed;
+    // mSecondarySpeed = secondarySpeed;
 
   }
 
@@ -24,7 +24,7 @@ public class SetShooterSpeedTargets extends CommandBase {
   @Override
   public void initialize() {
     mShooter.setMainShooterTargetRPM(mMainSpeed);
-    mShooter.setSecondaryShooterTargetRPM(mSecondarySpeed);
+    // mShooter.setSecondaryShooterTargetRPM(mSecondarySpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

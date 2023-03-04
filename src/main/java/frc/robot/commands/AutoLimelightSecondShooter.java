@@ -28,7 +28,7 @@ public class AutoLimelightSecondShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,7 +42,7 @@ public class AutoLimelightSecondShooter extends CommandBase {
       double targetSpeed = mInterpolator.calcSecondShooterSpeed(currentDistance);
 
       // SmartDashboard.putNumber("Second Target Speed", targetSpeed);
-      mShooter.setSecondaryShooterTargetRPM(targetSpeed);
+      // mShooter.setSecondaryShooterTargetRPM(targetSpeed);
     }
   }
 

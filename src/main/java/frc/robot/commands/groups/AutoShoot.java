@@ -29,21 +29,19 @@ public class AutoShoot extends SequentialCommandGroup {
 
   /** Creates a new AutoShoot. */
   public AutoShoot(CargoFunnel mCargoFunnel, BottomLift mBottomLift,
-        Shooter mShooter, ShooterHood mShooterHood, Turret mTurret, Drivetrain mDrivetrain) {
+      Shooter mShooter, ShooterHood mShooterHood, Turret mTurret, Drivetrain mDrivetrain) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-  addCommands(
-    new ParallelCommandGroup(                       // Preshoot checks must be completed first
-      new SetShooterCommanded(mShooter, true),      // Make sure shooter is running
-      new ShooterAtSpeed(mShooter).withTimeout(0.1),
-      new HoodAtAngle(mShooterHood).withTimeout(0.1),
-      new TurretOnTarget(mTurret).withTimeout(0.1)
-      // new DriveTrainStopped(mDrivetrain).withTimeout(0.5)
-      ),      
-    new ParallelCommandGroup(                       // OK TO shoot
-      new SpinCargoFunnel(mCargoFunnel, 0.45),
-      new SpinBottomLift(mBottomLift, .5)
-      )
-    );
+    addCommands(
+        new ParallelCommandGroup( // Preshoot checks must be completed first
+            new SetShooterCommanded(mShooter, true), // Make sure shooter is running
+            // new ShooterAtSpeed(mShooter).withTimeout(0.1),
+            new HoodAtAngle(mShooterHood).withTimeout(0.1),
+            new TurretOnTarget(mTurret).withTimeout(0.1)
+        // new DriveTrainStopped(mDrivetrain).withTimeout(0.5)
+        ),
+        new ParallelCommandGroup( // OK TO shoot
+            new SpinCargoFunnel(mCargoFunnel, 0.45),
+            new SpinBottomLift(mBottomLift, .5)));
   }
 }

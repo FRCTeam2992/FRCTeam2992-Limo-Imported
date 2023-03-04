@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
     public static RobotContainer mRobotContainer;
 
     private int vibrateCounter = 0;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -49,7 +50,7 @@ public class Robot extends TimedRobot {
         // and put our
         // autonomous chooser on the dashboard.
         mRobotContainer = RobotContainer.getInstance();
-        
+
         HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_RobotBuilder);
 
         mRobotContainer.mDrivetrain.navx.zeroYaw();
@@ -170,7 +171,8 @@ public class Robot extends TimedRobot {
         mRobotContainer.mDrivetrain.setDriveRampRate(0.25);
 
         mRobotContainer.mDrivetrain.resetOdometry();
-        //mRobotContainer.mDrivetrain.setPoseEstimatePosition(true, mRobotContainer.mDrivetrain.latestSwervePose);
+        // mRobotContainer.mDrivetrain.setPoseEstimatePosition(true,
+        // mRobotContainer.mDrivetrain.latestSwervePose);
         resetSubsystems();
     }
 
@@ -194,8 +196,6 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
     }
-
-    
 
     public void vibrateControllers() {
         if (++vibrateCounter >= 10) {

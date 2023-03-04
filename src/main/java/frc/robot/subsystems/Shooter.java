@@ -49,26 +49,28 @@ public class Shooter extends SubsystemBase {
   *
   */
   public Shooter() {
-    mainShooterLead = new WPI_TalonFX(31, "CanBus2");
-    mainShooterLead.setInverted(false);
+    mainShooterLead = new WPI_TalonFX(30, "CanBus2");
+    mainShooterLead.setInverted(true);
     mainShooterLead.setNeutralMode(NeutralMode.Coast);
     mainShooterLead.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40.0, 60.0, 0.1));
     addChild("mainShooterLead", mainShooterLead);
 
-    mainShooterFollow = new WPI_TalonFX(30, "CanBus2");
-    mainShooterFollow.setInverted(true);
-    mainShooterFollow.setNeutralMode(NeutralMode.Coast);
-    mainShooterFollow.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40.0, 60.0, 0.1));
-    mainShooterFollow.follow(mainShooterLead);
-    addChild("mainShooterFollow", mainShooterFollow);
+    // mainShooterFollow = new WPI_TalonFX(31, "CanBus2");
+    // mainShooterFollow.setInverted(true);
+    // mainShooterFollow.setNeutralMode(NeutralMode.Coast);
+    // mainShooterFollow.configSupplyCurrentLimit(new
+    // SupplyCurrentLimitConfiguration(true, 40.0, 60.0, 0.1));
+    // mainShooterFollow.follow(mainShooterLead);
+    // addChild("mainShooterFollow", mainShooterFollow);
 
-    secondaryShooterLead = new WPI_TalonFX(32, "CanBus2");
-    secondaryShooterLead.setNeutralMode(NeutralMode.Coast);
-    secondaryShooterLead.setInverted(true);
-    secondaryShooterLead.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40.0, 60.0, .25));
-    addChild("secondaryShooterLead", secondaryShooterLead);
-   
-     }
+    // secondaryShooterLead = new WPI_TalonFX(32, "CanBus2");
+    // secondaryShooterLead.setNeutralMode(NeutralMode.Coast);
+    // secondaryShooterLead.setInverted(true);
+    // secondaryShooterLead.configSupplyCurrentLimit(new
+    // SupplyCurrentLimitConfiguration(true, 40.0, 60.0, .25));
+    // addChild("secondaryShooterLead", secondaryShooterLead);
+
+  }
 
   @Override
   public void periodic() {
@@ -77,11 +79,14 @@ public class Shooter extends SubsystemBase {
       SmartDashboard.putNumber("Main Shooter Set Speed", mainShooterSetRPM);
       SmartDashboard.putNumber("Main Shooter Current RPM", getMainShooterRPM());
 
-      SmartDashboard.putNumber("Secondary Shooter Set Speed", secondaryShooterSetRPM);
-      SmartDashboard.putNumber("Secondary Shooter Current RPM", getSecondaryShooterRPM());
+      // SmartDashboard.putNumber("Secondary Shooter Set Speed",
+      // secondaryShooterSetRPM);
+      // SmartDashboard.putNumber("Secondary Shooter Current RPM",
+      // getSecondaryShooterRPM());
 
       // SmartDashboard.putBoolean("Main Shooter At Speed", atMainShooterRPM());
-      // SmartDashboard.putBoolean("Secondary Shooter At Speed", atSecondaryShooterRPM());
+      // SmartDashboard.putBoolean("Secondary Shooter At Speed",
+      // atSecondaryShooterRPM());
       // SmartDashboard.putBoolean("Shooters at Speed", atShooterRPM());
 
       dashboardCounter = 0;
@@ -98,9 +103,9 @@ public class Shooter extends SubsystemBase {
     mainShooterLead.set(ControlMode.PercentOutput, speed);
   }
 
-  public void setSecondaryShooterPower(double speed) {
-    secondaryShooterLead.set(ControlMode.PercentOutput, speed);
-  }
+  // public void setSecondaryShooterPower(double speed) {
+  // secondaryShooterLead.set(ControlMode.PercentOutput, speed);
+  // }
 
   public void setMainShooterToTargetRPM() {
     double speed = (mainShooterSetRPM / 600.0) * (Constants.shooterEncoderPulses * 0.75);
@@ -111,10 +116,11 @@ public class Shooter extends SubsystemBase {
     mainShooterLead.set(ControlMode.Velocity, velocity);
   }
 
-  public void setSecondaryShooterToTargetRPM() {
-    double speed = (secondaryShooterSetRPM / 600.0) * (Constants.shooterEncoderPulses);
-    setSecondaryShooterRawVelocity(speed);
-  }
+  // public void setSecondaryShooterToTargetRPM() {
+  // double speed = (secondaryShooterSetRPM / 600.0) *
+  // (Constants.shooterEncoderPulses);
+  // setSecondaryShooterRawVelocity(speed);
+  // }
 
   private void setSecondaryShooterRawVelocity(double velocity) {
     secondaryShooterLead.set(ControlMode.Velocity, velocity);
@@ -124,9 +130,10 @@ public class Shooter extends SubsystemBase {
     return (mainShooterLead.getSelectedSensorVelocity() * 600) / (Constants.shooterEncoderPulses * 0.75);
   }
 
-  public double getSecondaryShooterRPM() {
-    return (secondaryShooterLead.getSelectedSensorVelocity() * 600) / (Constants.shooterEncoderPulses);
-  }
+  // public double getSecondaryShooterRPM() {
+  // return (secondaryShooterLead.getSelectedSensorVelocity() * 600) /
+  // (Constants.shooterEncoderPulses);
+  // }
 
   public double getMainShooterTargetRPM() {
     return mainShooterSetRPM;
@@ -136,24 +143,25 @@ public class Shooter extends SubsystemBase {
     this.mainShooterSetRPM = mainShooterSetSpeed;
   }
 
-  public double getSecondaryShooterTargetRPM() {
-    return secondaryShooterSetRPM;
-  }
+  // public double getSecondaryShooterTargetRPM() {
+  // return secondaryShooterSetRPM;
+  // }
 
-  public void setSecondaryShooterTargetRPM(double secondaryShooterSetSpeed) {
-    this.secondaryShooterSetRPM = secondaryShooterSetSpeed;
-  }
+  // public void setSecondaryShooterTargetRPM(double secondaryShooterSetSpeed) {
+  // this.secondaryShooterSetRPM = secondaryShooterSetSpeed;
+  // }
 
   public boolean atMainShooterRPM() {
     return (Math.abs(getMainShooterTargetRPM() - getMainShooterRPM()) < 200.0);
   }
 
-  public boolean atSecondaryShooterRPM() {
-    return (Math.abs(getSecondaryShooterTargetRPM() - getSecondaryShooterRPM()) < 150.0);
-  }
+  // public boolean atSecondaryShooterRPM() {
+  // return (Math.abs(getSecondaryShooterTargetRPM() - getSecondaryShooterRPM()) <
+  // 150.0);
+  // }
 
   public boolean atShooterRPM() {
-    return (atMainShooterRPM() && atSecondaryShooterRPM());
+    return (atMainShooterRPM());
   }
 
   public boolean isShooterCommanded() {
@@ -167,5 +175,5 @@ public class Shooter extends SubsystemBase {
   public void reset() {
     setShooterCommanded(false);
   }
-  
+
 }

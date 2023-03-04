@@ -20,7 +20,7 @@ public class DefaultShooter extends CommandBase {
   private Shooter mShooter;
   private Turret mTurret;
   private CargoBallInterpolator mInterpolator;
-  
+
   public DefaultShooter(Shooter shooter, Turret turret, CargoBallInterpolator interpolator) {
     // Use addRequirements() here to declare subsystem dependencies.
     mShooter = shooter;
@@ -33,7 +33,7 @@ public class DefaultShooter extends CommandBase {
   @Override
 
   public void initialize() {
-   
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,21 +43,23 @@ public class DefaultShooter extends CommandBase {
       // Shooterwas last commanded on so spin it
       // CommandScheduler.getInstance().schedule(new StartShooter(mShooter));
       if (!mTurret.limeLightCamera.hasTarget() && Robot.mRobotContainer.controller1.getLeftBumper()) {
-          // Pose2d robotPose = Robot.mRobotContainer.mDrivetrain.swerveDrivePoseEstimator.getEstimatedPosition();
-          // Transform2d toTarget = robotPose.minus(Constants.goalPose);
-          // double distance = (100 / 2.54) * toTarget.getTranslation().getDistance(new Translation2d());
-          // SmartDashboard.putNumber("PoseEst distance", distance);
-          // double mainSpeed = mInterpolator.calcMainShooterSpeed(distance);
-          // double secondarySpeed = mInterpolator.calcSecondShooterSpeed(distance);
-          // mShooter.setMainShooterTargetRPM(mainSpeed);
-          // mShooter.setSecondaryShooterTargetRPM(secondarySpeed);        
+        // Pose2d robotPose =
+        // Robot.mRobotContainer.mDrivetrain.swerveDrivePoseEstimator.getEstimatedPosition();
+        // Transform2d toTarget = robotPose.minus(Constants.goalPose);
+        // double distance = (100 / 2.54) * toTarget.getTranslation().getDistance(new
+        // Translation2d());
+        // SmartDashboard.putNumber("PoseEst distance", distance);
+        // double mainSpeed = mInterpolator.calcMainShooterSpeed(distance);
+        // double secondarySpeed = mInterpolator.calcSecondShooterSpeed(distance);
+        // mShooter.setMainShooterTargetRPM(mainSpeed);
+        // mShooter.setSecondaryShooterTargetRPM(secondarySpeed);
       }
       mShooter.setMainShooterToTargetRPM();
-      mShooter.setSecondaryShooterToTargetRPM();
+      // mShooter.setSecondaryShooterToTargetRPM();
     } else {
-      //CommandScheduler.getInstance().schedule(new StopShooter(mShooter));
+      // CommandScheduler.getInstance().schedule(new StopShooter(mShooter));
       mShooter.setMainShooterPower(0.0);
-      mShooter.setSecondaryShooterPower(0.0);
+      // mShooter.setSecondaryShooterPower(0.0);
     }
   }
 

@@ -16,7 +16,7 @@ public class StartShooter extends CommandBase {
   // Subsystem Instance
   private Shooter mShooter;
 
-    public StartShooter(Shooter subsystem) {
+  public StartShooter(Shooter subsystem) {
     // Subsystem Instance
     mShooter = subsystem;
 
@@ -34,7 +34,7 @@ public class StartShooter extends CommandBase {
   @Override
   public void execute() {
     mShooter.setMainShooterToTargetRPM();
-    mShooter.setSecondaryShooterToTargetRPM();
+    // mShooter.setSecondaryShooterToTargetRPM();
   }
 
   // Called once the command ends or is interrupted.
