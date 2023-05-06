@@ -179,7 +179,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        vibrateControllers();
+        // vibrateControllers();
     }
 
     @Override
@@ -200,18 +200,6 @@ public class Robot extends TimedRobot {
     public void vibrateControllers() {
         if (++vibrateCounter >= 10) {
 
-            if ((mRobotContainer.mTurret.getFalconRealDegrees() < Constants.turretMinRumble)
-                    || (mRobotContainer.mTurret.getFalconRealDegrees() > Constants.turretMaxRumble)) {
-                mRobotContainer.controller0.setRumble(RumbleType.kLeftRumble, 1);
-                mRobotContainer.controller0.setRumble(RumbleType.kRightRumble, 1);
-                mRobotContainer.controller1.setRumble(RumbleType.kLeftRumble, 1);
-                mRobotContainer.controller1.setRumble(RumbleType.kRightRumble, 1);
-            } else {
-                mRobotContainer.controller0.setRumble(RumbleType.kLeftRumble, 0.0);
-                mRobotContainer.controller0.setRumble(RumbleType.kRightRumble, 0.0);
-                mRobotContainer.controller1.setRumble(RumbleType.kLeftRumble, 0.0);
-                mRobotContainer.controller1.setRumble(RumbleType.kRightRumble, 0.0);
-            }
             vibrateCounter = 0;
         }
 
@@ -219,10 +207,6 @@ public class Robot extends TimedRobot {
 
     public void stopVibrate() {
 
-        mRobotContainer.controller0.setRumble(RumbleType.kLeftRumble, 0.0);
-        mRobotContainer.controller0.setRumble(RumbleType.kRightRumble, 0.0);
-        mRobotContainer.controller1.setRumble(RumbleType.kLeftRumble, 0.0);
-        mRobotContainer.controller1.setRumble(RumbleType.kRightRumble, 0.0);
     }
 
     /**

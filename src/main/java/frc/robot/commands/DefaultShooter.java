@@ -42,16 +42,19 @@ public class DefaultShooter extends CommandBase {
     if (mShooter.isShooterCommanded()) {
       // Shooterwas last commanded on so spin it
       // CommandScheduler.getInstance().schedule(new StartShooter(mShooter));
-      if (!mTurret.limeLightCamera.hasTarget() && Robot.mRobotContainer.controller1.getLeftBumper()) {
-          // Pose2d robotPose = Robot.mRobotContainer.mDrivetrain.swerveDrivePoseEstimator.getEstimatedPosition();
-          // Transform2d toTarget = robotPose.minus(Constants.goalPose);
-          // double distance = (100 / 2.54) * toTarget.getTranslation().getDistance(new Translation2d());
-          // SmartDashboard.putNumber("PoseEst distance", distance);
-          // double mainSpeed = mInterpolator.calcMainShooterSpeed(distance);
-          // double secondarySpeed = mInterpolator.calcSecondShooterSpeed(distance);
-          // mShooter.setMainShooterTargetRPM(mainSpeed);
-          // mShooter.setSecondaryShooterTargetRPM(secondarySpeed);        
-      }
+      // if (!mTurret.limeLightCamera.hasTarget() &&
+      // Robot.mRobotContainer.controller1.getLeftBumper()) {
+      // // Pose2d robotPose =
+      // Robot.mRobotContainer.mDrivetrain.swerveDrivePoseEstimator.getEstimatedPosition();
+      // // Transform2d toTarget = robotPose.minus(Constants.goalPose);
+      // // double distance = (100 / 2.54) * toTarget.getTranslation().getDistance(new
+      // Translation2d());
+      // // SmartDashboard.putNumber("PoseEst distance", distance);
+      // // double mainSpeed = mInterpolator.calcMainShooterSpeed(distance);
+      // // double secondarySpeed = mInterpolator.calcSecondShooterSpeed(distance);
+      // // mShooter.setMainShooterTargetRPM(mainSpeed);
+      // // mShooter.setSecondaryShooterTargetRPM(secondarySpeed);
+      // }
       mShooter.setMainShooterToTargetRPM();
       mShooter.setSecondaryShooterToTargetRPM();
     } else {

@@ -58,54 +58,63 @@ public class ClimbSticks extends CommandBase {
     
     climbY = MathUtil.clamp(climbY, -1.0, 1.0);     // Temp clamp for testing
     
-    if (climbOnDebounce.calculate(Robot.mRobotContainer.controller1.getRightStickButton())) {
-      // Climb mode button pressed -- need to do interlock to time traverse extension
-      if (!traverseLockPressed) {
-        // New button press, so set locked mode
-        traverseLockPressed = true;
-        traverseLocked = true;
-      } else {
-        // Not a new button press so change no state 
-      }
+    // if
+    // (climbOnDebounce.calculate(Robot.mRobotContainer.controller1.getRightStickButton()))
+    // {
+    // // Climb mode button pressed -- need to do interlock to time traverse
+    // extension
+    // if (!traverseLockPressed) {
+    // // New button press, so set locked mode
+    // traverseLockPressed = true;
+    // traverseLocked = true;
+    // } else {
+    // // Not a new button press so change no state
+    // }
       
-      // Update the current pitch angle and rate of change using filters
-      double pitch = pitchFilter.calculate(mDrivetrain.getLastPitch());
-      double pitchChange = picthChangeFilter.calculate(mDrivetrain.getPitchChange());
+    // // Update the current pitch angle and rate of change using filters
+    // double pitch = pitchFilter.calculate(mDrivetrain.getLastPitch());
+    // double pitchChange =
+    // picthChangeFilter.calculate(mDrivetrain.getPitchChange());
       
-      // If "locked" and trying to extend climber make sure we are at right part of swing
-      if (traverseLocked && (climbY > 0)) {
-        // We are traverse locked and trying to extend so need to check locks
-        if (((pitchChange < Constants.traversePitchMinDelta) &&  // Note pitchChange must be negative
-                (pitch > Constants.traverseMinPitch) &&
-                (pitch < Constants.traverseMaxPitch)) ||
-              ((mClimb.getLeftEncoderAngle() > Constants.traverseLockMaxEncoder) &&
-                (mClimb.getRighttEncoderAngle() > Constants.traverseLockMaxEncoder))) {
-          // Swinging fast enough in the right direction and right part of swing OR we have already released
-          traverseLocked = false;           // Met criteria so undo the lock
-        } else {
-          // Still locked so zero the power to climb motors
-          climbY = 0.0;
-        }
+    // // If "locked" and trying to extend climber make sure we are at right part of
+    // swing
+    // if (traverseLocked && (climbY > 0)) {
+    // // We are traverse locked and trying to extend so need to check locks
+    // if (((pitchChange < Constants.traversePitchMinDelta) && // Note pitchChange
+    // must be negative
+    // (pitch > Constants.traverseMinPitch) &&
+    // (pitch < Constants.traverseMaxPitch)) ||
+    // ((mClimb.getLeftEncoderAngle() > Constants.traverseLockMaxEncoder) &&
+    // (mClimb.getRighttEncoderAngle() > Constants.traverseLockMaxEncoder))) {
+    // // Swinging fast enough in the right direction and right part of swing OR we
+    // have already released
+    // traverseLocked = false; // Met criteria so undo the lock
+    // } else {
+    // // Still locked so zero the power to climb motors
+    // climbY = 0.0;
+    // }
         
-      } else {
-        // Change nothing -- Pressing button but already unlocked or not trying to extend so allow
-      }
+    // } else {
+    // // Change nothing -- Pressing button but already unlocked or not trying to
+    // extend so allow
+    // }
 
-      if ((climbY > 0) && (mClimb.getLeftEncoderAngle() > Constants.traversalPause) && 
-            (mClimb.getRighttEncoderAngle() > Constants.traversalPause) &&
-            (pitch > Constants.traversalFullExtendPitch)) {
-        // Moving up and in pause zone and not yet sloped enough
-         //if (pitchChange < Constants.traversePitchMinDelta) {
-         climbY = 0.0;  
+    // if ((climbY > 0) && (mClimb.getLeftEncoderAngle() > Constants.traversalPause)
+    // &&
+    // (mClimb.getRighttEncoderAngle() > Constants.traversalPause) &&
+    // (pitch > Constants.traversalFullExtendPitch)) {
+    // // Moving up and in pause zone and not yet sloped enough
+    // //if (pitchChange < Constants.traversePitchMinDelta) {
+    // climbY = 0.0;
       
-      }
-    } else {
-      // No longer pressing button so clear all traverse locks
-      traverseLockPressed = false;
-      traverseLocked = false;
-      pitchFilter.reset();
-      picthChangeFilter.reset();
-    }
+    // }
+    // } else {
+    // // No longer pressing button so clear all traverse locks
+    // traverseLockPressed = false;
+    // traverseLocked = false;
+    // pitchFilter.reset();
+    // picthChangeFilter.reset();
+    // }
 
     mClimb.setClimbSpeedSmart(climbY);
   }

@@ -55,30 +55,34 @@ public class AutoTurretAim extends CommandBase {
             double targetAngle;
             double xyMagnitude = Math.sqrt((x * x) + (y * y));
 
-            if (xyMagnitude >= Constants.turretJoystickDeadband && !mClimb.getClimbMode()){
-                if(xyMagnitude > 1){
-                    x /= xyMagnitude;
-                    y /= xyMagnitude;
-                }
-                if(Constants.isFieldCentric){
-                    targetAngle = Turret.angleOverlap((Math.toDegrees(Math.atan2(y, x)) - 90) - mTurret.getGyroYaw());
-                }
-                mTurret.goToAngle(Turret.angleOverlap(targetAngle));
-                // SmartDashboard.putNumber("TurretStick output", targetAngle);
-            } else if (Robot.mRobotContainer.controller1.getLeftBumper()) {
-                mTurret.stopTurret();
-                // Pose2d robotPose = Robot.mRobotContainer.mDrivetrain.swerveDrivePoseEstimator.getEstimatedPosition();
-                // Transform2d toTarget = robotPose.minus(Constants.goalPose);
-                // double toTargetX = toTarget.getTranslation().getX();
-                // double toTargetY = toTarget.getTranslation().getY();
-                // double toTargetAngle = Turret.angleOverlap(180 - Math.toDegrees(Math.atan2(toTargetY, toTargetX)));
-                // SmartDashboard.putNumber("toTargetAngle", toTargetAngle);
-                // SmartDashboard.putNumber("toTargetX", toTarget.getX() * 2.54 / 100);
-                // SmartDashboard.putNumber("toTargetY", toTarget.getY() * 2.54 / 100);
-                // mTurret.goToAngle(toTargetAngle - mTurret.getGyroYaw());
-            } else {
-                mTurret.stopTurret();
-            }
+            // if (xyMagnitude >= Constants.turretJoystickDeadband &&
+            // !mClimb.getClimbMode()){
+            // if(xyMagnitude > 1){
+            // x /= xyMagnitude;
+            // y /= xyMagnitude;
+            // }
+            // if(Constants.isFieldCentric){
+            // targetAngle = Turret.angleOverlap((Math.toDegrees(Math.atan2(y, x)) - 90) -
+            // mTurret.getGyroYaw());
+            // }
+            // mTurret.goToAngle(Turret.angleOverlap(targetAngle));
+            // // SmartDashboard.putNumber("TurretStick output", targetAngle);
+            // } else if (Robot.mRobotContainer.controller1.getLeftBumper()) {
+            // mTurret.stopTurret();
+            // // Pose2d robotPose =
+            // Robot.mRobotContainer.mDrivetrain.swerveDrivePoseEstimator.getEstimatedPosition();
+            // // Transform2d toTarget = robotPose.minus(Constants.goalPose);
+            // // double toTargetX = toTarget.getTranslation().getX();
+            // // double toTargetY = toTarget.getTranslation().getY();
+            // // double toTargetAngle = Turret.angleOverlap(180 -
+            // Math.toDegrees(Math.atan2(toTargetY, toTargetX)));
+            // // SmartDashboard.putNumber("toTargetAngle", toTargetAngle);
+            // // SmartDashboard.putNumber("toTargetX", toTarget.getX() * 2.54 / 100);
+            // // SmartDashboard.putNumber("toTargetY", toTarget.getY() * 2.54 / 100);
+            // // mTurret.goToAngle(toTargetAngle - mTurret.getGyroYaw());
+            // } else {
+            // mTurret.stopTurret();
+            // }
 
         }
     }

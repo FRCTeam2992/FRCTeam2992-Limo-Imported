@@ -65,7 +65,7 @@ public class TurretSticks extends CommandBase {
          mTurret.goToAngle(Turret.angleOverlap(targetAngle));
       }
       // SmartDashboard.putNumber("TurretStick output", targetAngle);
-    } else if (!mClimb.getClimbMode() && Robot.mRobotContainer.controller1.getLeftBumper()) {
+  } else if (!mClimb.getClimbMode() && Robot.mRobotContainer.controller1.leftBumper().getAsBoolean()) {
       mTurret.stopTurret();
       // Pose2d robotPose = Robot.mRobotContainer.mDrivetrain.swerveDrivePoseEstimator.getEstimatedPosition();
       // Transform2d toTarget = robotPose.minus(Constants.goalPose);

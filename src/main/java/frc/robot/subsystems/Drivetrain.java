@@ -242,7 +242,7 @@ public class Drivetrain extends SubsystemBase {
 
     // Swerve Controller
     swerveController = new SwerveController(Constants.swerveLength, Constants.swerveWidth);
-
+    swerveDriveModulePositions = new SwerveModulePosition[4];
     swerveDriveModulePositions[0] = frontLeftModule.getPosition();
     swerveDriveModulePositions[1] = frontRightModule.getPosition();
     swerveDriveModulePositions[2] = rearLeftModule.getPosition();

@@ -41,13 +41,16 @@ public class HoldHoodAngle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!mTurret.limeLightCamera.hasTarget() && Robot.mRobotContainer.controller1.getLeftBumper()) {
-      // Pose2d robotPose = Robot.mRobotContainer.mDrivetrain.swerveDrivePoseEstimator.getEstimatedPosition();
-      // Transform2d toTarget = robotPose.minus(Constants.goalPose);
-      // double distance = (100 / 2.54) * toTarget.getTranslation().getDistance(new Translation2d());
-      // double angle = mInterpolator.calcHoodPosition(distance);
-      // mShooterHood.setHoodTarget(angle);  
-    }
+      // if (!mTurret.limeLightCamera.hasTarget() &&
+      // Robot.mRobotContainer.controller1.getLeftBumper()) {
+      // // Pose2d robotPose =
+      // Robot.mRobotContainer.mDrivetrain.swerveDrivePoseEstimator.getEstimatedPosition();
+      // // Transform2d toTarget = robotPose.minus(Constants.goalPose);
+      // // double distance = (100 / 2.54) * toTarget.getTranslation().getDistance(new
+      // Translation2d());
+      // // double angle = mInterpolator.calcHoodPosition(distance);
+      // // mShooterHood.setHoodTarget(angle);
+      // }
     
     mShooterHood.setToTarget();
   }

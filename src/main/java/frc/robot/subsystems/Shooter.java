@@ -49,13 +49,13 @@ public class Shooter extends SubsystemBase {
   *
   */
   public Shooter() {
-    mainShooterLead = new WPI_TalonFX(31, "CanBus2");
+      mainShooterLead = new WPI_TalonFX(30, "CanBus2");
     mainShooterLead.setInverted(false);
     mainShooterLead.setNeutralMode(NeutralMode.Coast);
     mainShooterLead.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40.0, 60.0, 0.1));
     addChild("mainShooterLead", mainShooterLead);
 
-    mainShooterFollow = new WPI_TalonFX(30, "CanBus2");
+    mainShooterFollow = new WPI_TalonFX(31, "CanBus2");
     mainShooterFollow.setInverted(true);
     mainShooterFollow.setNeutralMode(NeutralMode.Coast);
     mainShooterFollow.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40.0, 60.0, 0.1));
