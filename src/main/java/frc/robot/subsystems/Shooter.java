@@ -49,20 +49,20 @@ public class Shooter extends SubsystemBase {
   *
   */
   public Shooter() {
-      mainShooterLead = new WPI_TalonFX(30, "CanBus2");
-    mainShooterLead.setInverted(false);
+      mainShooterLead = new WPI_TalonFX(30);
+      mainShooterLead.setInverted(true);
     mainShooterLead.setNeutralMode(NeutralMode.Coast);
     mainShooterLead.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40.0, 60.0, 0.1));
     addChild("mainShooterLead", mainShooterLead);
 
-    mainShooterFollow = new WPI_TalonFX(31, "CanBus2");
-    mainShooterFollow.setInverted(true);
+    mainShooterFollow = new WPI_TalonFX(31);
+    mainShooterFollow.setInverted(false);
     mainShooterFollow.setNeutralMode(NeutralMode.Coast);
     mainShooterFollow.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40.0, 60.0, 0.1));
     mainShooterFollow.follow(mainShooterLead);
     addChild("mainShooterFollow", mainShooterFollow);
 
-    secondaryShooterLead = new WPI_TalonFX(32, "CanBus2");
+    secondaryShooterLead = new WPI_TalonFX(32);
     secondaryShooterLead.setNeutralMode(NeutralMode.Coast);
     secondaryShooterLead.setInverted(true);
     secondaryShooterLead.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40.0, 60.0, .25));
@@ -80,9 +80,9 @@ public class Shooter extends SubsystemBase {
       SmartDashboard.putNumber("Secondary Shooter Set Speed", secondaryShooterSetRPM);
       SmartDashboard.putNumber("Secondary Shooter Current RPM", getSecondaryShooterRPM());
 
-      // SmartDashboard.putBoolean("Main Shooter At Speed", atMainShooterRPM());
-      // SmartDashboard.putBoolean("Secondary Shooter At Speed", atSecondaryShooterRPM());
-      // SmartDashboard.putBoolean("Shooters at Speed", atShooterRPM());
+      SmartDashboard.putBoolean("Main Shooter At Speed", atMainShooterRPM());
+      SmartDashboard.putBoolean("Secondary Shooter At Speed", atSecondaryShooterRPM());
+      SmartDashboard.putBoolean("Shooters at Speed", atShooterRPM());
 
       dashboardCounter = 0;
     }

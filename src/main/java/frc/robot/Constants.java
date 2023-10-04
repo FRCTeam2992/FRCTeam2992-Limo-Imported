@@ -128,10 +128,10 @@ public class Constants {
 
   // Analog Encoder Offsets (Degrees) - Opposite of Raw Reading - Bevel Gear to
   // Right
-  public static final double frontLeftOffset = 146.42578125;
-  public static final double frontRightOffset = -144.140625;
-  public static final double rearLeftOffset = 101.25;
-  public static final double rearRightOffset = -24.521484375;
+  public static final double frontLeftOffset = 147.65; // 146.42578125;
+  public static final double frontRightOffset = -78.31; // -144.140625;
+  public static final double rearLeftOffset = -179.91; // 101.25;
+  public static final double rearRightOffset = 123.92; // -24.521484375;
 
   // Swerve Drive PID (Velocity Control)
   public static final double driveP = 0.05;

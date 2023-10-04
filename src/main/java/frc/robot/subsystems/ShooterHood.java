@@ -39,7 +39,7 @@ public class ShooterHood extends SubsystemBase {
 
     addChild("hoodMotor", hoodMotor);
 
-    hoodEncoder = new CANCoder(33, "CanBus2");
+    hoodEncoder = new CANCoder(33);
 
     hoodEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
     hoodEncoder.configSensorDirection(true);

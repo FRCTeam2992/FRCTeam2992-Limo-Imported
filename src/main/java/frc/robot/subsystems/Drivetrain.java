@@ -294,14 +294,14 @@ public class Drivetrain extends SubsystemBase {
       // SmartDashboard.putNumber("Gyro Yaw", navx.getYaw());
 
       // // Display Module Angles
-      // SmartDashboard.putNumber("Front Left Module Angle",
-      // frontLeftModule.getEncoderAngle());
-      // SmartDashboard.putNumber("Front Right Module Angle",
-      // frontRightModule.getEncoderAngle());
-      // SmartDashboard.putNumber("Rear Left Module Angle",
-      // rearLeftModule.getEncoderAngle());
-      // SmartDashboard.putNumber("Rear Right Module Angle",
-      // rearRightModule.getEncoderAngle());
+      SmartDashboard.putNumber("Front Left Module Angle",
+              frontLeftModule.getEncoderAngle());
+      SmartDashboard.putNumber("Front Right Module Angle",
+              frontRightModule.getEncoderAngle());
+      SmartDashboard.putNumber("Rear Left Module Angle",
+              rearLeftModule.getEncoderAngle());
+      SmartDashboard.putNumber("Rear Right Module Angle",
+              rearRightModule.getEncoderAngle());
 
       // Display Wheel Velocities
       // SmartDashboard.putNumber("Front Left Module Velocity",

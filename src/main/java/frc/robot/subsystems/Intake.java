@@ -36,7 +36,7 @@ public class Intake extends SubsystemBase {
 
     public Intake() {
 
-        intakeMotor = new WPI_TalonFX(21, "CanBus2");
+        intakeMotor = new WPI_TalonFX(21);
         intakeMotor.setNeutralMode(NeutralMode.Brake);
         intakeMotor.setInverted(false);
         intakeMotor.setStatusFramePeriod(1, 255);

@@ -57,7 +57,7 @@ public class Turret extends SubsystemBase {
 
     public Turret(Drivetrain drivetrain) {
         // Turret Motors
-        turretFalcon = new WPI_TalonFX(34, "CanBus2");
+        turretFalcon = new WPI_TalonFX(34);
         turretFalcon.setNeutralMode(NeutralMode.Brake);
         turretFalcon.setInverted(false);
         //turretTalon.configSelectedFeedbackSensor(FeedbackDevice.PulseWidthEncodedPosition);
@@ -70,7 +70,7 @@ public class Turret extends SubsystemBase {
         turretFalcon.setStatusFramePeriod(14, 249);
         addChild("Turret Motor", turretFalcon);
 
-        turretEncoder = new CANCoder(34, "CanBus2");
+        turretEncoder = new CANCoder(34);
         turretEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
 
         // Turret PID Controller
