@@ -26,6 +26,10 @@ public class Constants {
   // Robot Period
   public static final double robotPeriod = 0.020;     // 20ms cycles
 
+  // Single vs Double Controller mode
+  // True = single controller mode
+  public static final boolean isSingleController = true;
+
   //Intake Deploy Constants
   public static final double maxIntakeEncoderAngle = 50;
   public static final double minIntakeEncoderAngle = 0;

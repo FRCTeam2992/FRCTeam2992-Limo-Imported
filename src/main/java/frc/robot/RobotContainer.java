@@ -178,6 +178,45 @@ public class RobotContainer {
     SmartDashboard.putData("Increase Second Shooter Speed", new ChangeSecondaryShooterSpeed(mShooter, 50));
     SmartDashboard.putData("Decrease Second Shooter Speed", new ChangeSecondaryShooterSpeed(mShooter, -50));
 
+    if (Constants.isSingleController) {
+      // Triggers
+      controller0.leftTrigger(0.4).whileTrue(new AutoTurretAim(mTurret, mClimb));
+      controller0.leftTrigger(0.4).whileTrue(new AutoLimelightHood(mTurret, mShooterHood, cargoBallInterpolator));
+      controller0.leftTrigger(0.4).whileTrue(new AutoLimelightMainShooter(mTurret, mShooter, cargoBallInterpolator));
+      controller0.leftTrigger(0.4).whileTrue(new AutoLimelightSecondShooter(mTurret, mShooter, cargoBallInterpolator));
+
+      controller0.rightTrigger(0.4).whileTrue(new AutoShoot(mCargoFunnel, mBottomLift,
+          mShooter, mShooterHood, mTurret, mDrivetrain));
+
+      // Bumpers
+      controller0.leftBumper().onTrue(new StopAutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
+      controller0.rightBumper().onTrue(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy, false));
+
+      // POV
+      controller0.povUp().whileTrue(new MoveHood(mShooterHood, 0.5));
+      controller0.povDown().whileTrue(new MoveHood(mShooterHood, -0.5));
+
+      controller0.povLeft().whileTrue(new MoveTurret(mTurret, 0.3));
+      controller0.povRight().whileTrue(new MoveTurret(mTurret, -0.3));
+
+      // ABXY
+      controller0.a().onTrue(new MoveTurretToAngle(mTurret, 0));
+
+      controller0.b().onTrue(new DejamBallPath(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
+
+      controller0.x().onTrue(new ChangeMainShooterSpeed(mShooter, -50));
+      controller0.x().onTrue(new ChangeSecondaryShooterSpeed(mShooter, -15));
+      controller0.y().onTrue(new ChangeMainShooterSpeed(mShooter, 50));
+      controller0.y().onTrue(new ChangeSecondaryShooterSpeed(mShooter, 15));
+
+      // Joysticks
+      controller0.leftStick().onTrue(new StartShooter(mShooter));
+      controller0.rightStick().onTrue(new StopShooter(mShooter));
+
+      // Start/Back
+      controller0.start().onTrue(new ResetGyro(mDrivetrain));
+
+    } else {
   /*
   controller0 buttons
   */
@@ -190,6 +229,10 @@ public class RobotContainer {
     // mShooter, cargoBallInterpolator));
     // autoAimButton.whileActiveContinuous(new AutoLimelightSecondShooter(mTurret,
     // mShooter, cargoBallInterpolator));
+    controller0.leftTrigger(0.4).whileTrue(new AutoTurretAim(mTurret, mClimb));
+    controller0.leftTrigger(0.4).whileTrue(new AutoLimelightHood(mTurret, mShooterHood, cargoBallInterpolator));
+    controller0.leftTrigger(0.4).whileTrue(new AutoLimelightMainShooter(mTurret, mShooter, cargoBallInterpolator));
+    controller0.leftTrigger(0.4).whileTrue(new AutoLimelightSecondShooter(mTurret, mShooter, cargoBallInterpolator));
 
     controller0.rightTrigger(0.4).whileTrue(new AutoShoot(mCargoFunnel, mBottomLift,
             mShooter, mShooterHood, mTurret, mDrivetrain));
@@ -305,7 +348,7 @@ public class RobotContainer {
       // JoystickButton reverseIntakeButton = new JoystickButton(controller1, XboxController.Button.kRightStick.value);
       // reverseIntakeButton.whenPressed(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mTopLift, mIntakeDeploy, false));
 
-
+    }
 
   /*
   SmartDashBoard Buttons
