@@ -34,6 +34,7 @@ public class StopShooter extends CommandBase {
   public void execute() {
     mShooter.setMainShooterPower(0.0);
     mShooter.setSecondaryShooterPower(0.0);
+    mShooter.setShooterCommanded(false);
   }
 
   // Called once the command ends or is interrupted.

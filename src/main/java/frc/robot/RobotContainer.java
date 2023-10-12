@@ -278,14 +278,16 @@ public class RobotContainer {
 
 
     //-ABXY
-    controller0.x().onTrue(new InstantCommand(() -> mShooter.setMainShooterPower(0.65)));
+    // controller0.x().onTrue(new InstantCommand(() -> mShooter.setMainShooterPower(0.65)));
+    controller0.x().onTrue(new StartShooter(mShooter));
 
     controller0.a().onTrue(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy, true));
       // autoIntakeButton.whenPressed(new ChangeIntakeState(mIntakeDeploy, true), true);
 
       controller0.b().onTrue(new StopAutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
 
-      controller0.y().onTrue(new InstantCommand(() -> mShooter.setMainShooterPower(0.0)));
+      // controller0.y().onTrue(new InstantCommand(() -> mShooter.setMainShooterPower(0.0)));
+      controller0.y().onTrue(new StopShooter(mShooter));
 
 
     
