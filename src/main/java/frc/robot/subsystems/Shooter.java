@@ -49,10 +49,14 @@ public class Shooter extends SubsystemBase {
   *
   */
   public Shooter() {
-      mainShooterLead = new WPI_TalonFX(30);
-      mainShooterLead.setInverted(true);
+    mainShooterLead = new WPI_TalonFX(30);
+    mainShooterLead.setInverted(true);
     mainShooterLead.setNeutralMode(NeutralMode.Coast);
     mainShooterLead.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40.0, 60.0, 0.1));
+    mainShooterLead.config_kP(0, Constants.shooterPIDMainP);
+    mainShooterLead.config_kI(0, Constants.shooterPIDMainI);
+    mainShooterLead.config_kD(0, Constants.shooterPIDMainD);
+    mainShooterLead.config_kF(0, Constants.shooterPIDMainF);
     addChild("mainShooterLead", mainShooterLead);
 
     mainShooterFollow = new WPI_TalonFX(31);
@@ -60,6 +64,10 @@ public class Shooter extends SubsystemBase {
     mainShooterFollow.setNeutralMode(NeutralMode.Coast);
     mainShooterFollow.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40.0, 60.0, 0.1));
     mainShooterFollow.follow(mainShooterLead);
+    mainShooterFollow.config_kP(0, Constants.shooterPIDSecondaryP);
+    mainShooterFollow.config_kI(0, Constants.shooterPIDSecondaryI);
+    mainShooterFollow.config_kD(0, Constants.shooterPIDSecondaryD);
+    mainShooterFollow.config_kF(0, Constants.shooterPIDSecondaryF);
     addChild("mainShooterFollow", mainShooterFollow);
 
     secondaryShooterLead = new WPI_TalonFX(32);

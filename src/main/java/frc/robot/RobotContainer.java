@@ -218,9 +218,15 @@ public class RobotContainer {
     // POVButton xPatternButtonRight = new POVButton(controller0, 90);
     // xPatternButtonRight.whenPressed(new HomeIntakeDeploy(mIntakeDeploy));
     //-ABXY
-    controller0.povUp().onTrue(new ChangeMainShooterSpeed(mShooter, 50));
+    controller0.povUp().onTrue(
+      new ChangeMainShooterSpeed(mShooter, 50)
+      .andThen(new ChangeSecondaryShooterSpeed(mShooter, 50))
+      .andThen(new StartShooter(mShooter)));
 
-    controller0.povDown().onTrue(new ChangeMainShooterSpeed(mShooter, -50));
+    controller0.povDown().onTrue(
+      new ChangeMainShooterSpeed(mShooter, -50)
+      .andThen(new ChangeSecondaryShooterSpeed(mShooter, -50))
+      .andThen(new StartShooter(mShooter)));
 
     // JoystickButton increaseSecondShooterSpeed = new JoystickButton(controller0,
     // XboxController.Button.kX.value);
@@ -278,14 +284,16 @@ public class RobotContainer {
 
 
     //-ABXY
-    controller0.x().onTrue(new InstantCommand(() -> mShooter.setMainShooterPower(0.65)));
+    // controller0.x().onTrue(new InstantCommand(() -> mShooter.setMainShooterPower(0.65)));
+    controller0.x().onTrue(new StartShooter(mShooter));
 
     controller0.a().onTrue(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy, true));
       // autoIntakeButton.whenPressed(new ChangeIntakeState(mIntakeDeploy, true), true);
 
       controller0.b().onTrue(new StopAutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
 
-      controller0.y().onTrue(new InstantCommand(() -> mShooter.setMainShooterPower(0.0)));
+      // controller0.y().onTrue(new InstantCommand(() -> mShooter.setMainShooterPower(0.0)));
+      controller0.y().onTrue(new StopShooter(mShooter));
 
 
     
