@@ -189,25 +189,27 @@ public class RobotContainer {
           mShooter, mShooterHood, mTurret, mDrivetrain));
 
       // Bumpers
-      controller0.leftBumper().onTrue(new StopAutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
-      controller0.rightBumper().onTrue(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy, false));
+      controller0.leftBumper().whileTrue(new DejamBallPath(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
+      controller0.rightBumper().onTrue(new MoveTurretToAngle(mTurret, 0));
 
       // POV
-      controller0.povUp().whileTrue(new MoveHood(mShooterHood, 0.5));
-      controller0.povDown().whileTrue(new MoveHood(mShooterHood, -0.5));
+      controller0.povUp().whileTrue(new MoveHood(mShooterHood, 0.25));
+      controller0.povDown().whileTrue(new MoveHood(mShooterHood, -0.25));
 
       controller0.povLeft().whileTrue(new MoveTurret(mTurret, 0.3));
       controller0.povRight().whileTrue(new MoveTurret(mTurret, -0.3));
 
       // ABXY
-      controller0.a().onTrue(new MoveTurretToAngle(mTurret, 0));
+      controller0.a().onTrue(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy, false));
 
-      controller0.b().onTrue(new DejamBallPath(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
+      controller0.b().onTrue(new StopAutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
 
-      controller0.x().onTrue(new ChangeMainShooterSpeed(mShooter, -50));
-      controller0.x().onTrue(new ChangeSecondaryShooterSpeed(mShooter, -15));
-      controller0.y().onTrue(new ChangeMainShooterSpeed(mShooter, 50));
-      controller0.y().onTrue(new ChangeSecondaryShooterSpeed(mShooter, 15));
+      controller0.x().onTrue(new ChangeMainShooterSpeed(mShooter, -100)
+          .andThen(new ChangeSecondaryShooterSpeed(mShooter, -100))
+          .andThen(new StartShooter(mShooter)));
+      controller0.y().onTrue(new ChangeMainShooterSpeed(mShooter, 100)
+          .andThen(new ChangeSecondaryShooterSpeed(mShooter, 100))
+          .andThen(new StartShooter(mShooter)));
 
       // Joysticks
       controller0.leftStick().onTrue(new StartShooter(mShooter));
