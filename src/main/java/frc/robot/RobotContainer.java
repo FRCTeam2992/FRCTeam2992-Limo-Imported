@@ -218,9 +218,15 @@ public class RobotContainer {
     // POVButton xPatternButtonRight = new POVButton(controller0, 90);
     // xPatternButtonRight.whenPressed(new HomeIntakeDeploy(mIntakeDeploy));
     //-ABXY
-    controller0.povUp().onTrue(new ChangeMainShooterSpeed(mShooter, 50));
+    controller0.povUp().onTrue(
+      new ChangeMainShooterSpeed(mShooter, 50)
+      .andThen(new ChangeSecondaryShooterSpeed(mShooter, 50))
+      .andThen(new StartShooter(mShooter)));
 
-    controller0.povDown().onTrue(new ChangeMainShooterSpeed(mShooter, -50));
+    controller0.povDown().onTrue(
+      new ChangeMainShooterSpeed(mShooter, -50)
+      .andThen(new ChangeSecondaryShooterSpeed(mShooter, -50))
+      .andThen(new StartShooter(mShooter)));
 
     // JoystickButton increaseSecondShooterSpeed = new JoystickButton(controller0,
     // XboxController.Button.kX.value);
