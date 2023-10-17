@@ -102,10 +102,15 @@ public class Constants {
   public static final double distanceTest = 120;
   public static final double cameraAngle = 35;
 
-  public static final double hoodP = .007;
-  public static final double hoodI = 0.02; 
-  public static final double hoodD = 0.0001;
-  public static final double hoodF = 0.02; 
+  public static final double hoodP = .001; // 0.007
+  public static final double hoodI = 0.0; // 0.02
+  public static final double hoodD = 0.000; // 0.0001
+  public static final double hoodF = 0.08; // 0.02
+  // Phoenix Tuner PID constants:
+  // P- 0.08
+  // I- 0.0
+  // D- 3.5
+  // F- 0.0135
 
   public static final double hoodTolerance = 10;
 

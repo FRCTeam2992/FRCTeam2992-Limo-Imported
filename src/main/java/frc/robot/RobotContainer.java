@@ -193,8 +193,8 @@ public class RobotContainer {
       controller0.rightBumper().onTrue(new MoveTurretToAngle(mTurret, 0));
 
       // POV
-      controller0.povUp().whileTrue(new MoveHood(mShooterHood, 0.25));
-      controller0.povDown().whileTrue(new MoveHood(mShooterHood, -0.25));
+      controller0.povUp().whileTrue(new MoveHood(mShooterHood, 0.50));
+      controller0.povDown().whileTrue(new MoveHood(mShooterHood, -0.50));
 
       controller0.povLeft().whileTrue(new MoveTurret(mTurret, 0.3));
       controller0.povRight().whileTrue(new MoveTurret(mTurret, -0.3));
