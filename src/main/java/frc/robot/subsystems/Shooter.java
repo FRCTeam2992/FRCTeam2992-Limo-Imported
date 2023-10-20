@@ -174,6 +174,7 @@ public class Shooter extends SubsystemBase {
 
   public void reset() {
     setShooterCommanded(false);
+    setMainShooterPower(0.0);
+    setSecondaryShooterPower(0.0);
   }
-  
 }
