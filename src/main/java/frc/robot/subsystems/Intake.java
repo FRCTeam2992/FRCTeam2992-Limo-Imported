@@ -14,10 +14,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 /**
  *
@@ -25,30 +26,39 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 public class Intake extends SubsystemBase {
 
 
-    private WPI_TalonFX intakeMotor;
+    private TalonFX intakeMotor;
+    private TalonFXConfiguration intakeMotorConfigs;
+    private DutyCycleOut controlRequest;
    
     private boolean intakeDeployed = false;
 
-    private int dashboardCounter = 0;
+    // private int dashboardCounter = 0;
 
     private boolean intakeCommanded = false;                 // Did driver request intake running
     private double speedCommanded = 0;                       // Requested speed
 
     public Intake() {
 
-        intakeMotor = new WPI_TalonFX(21);
-        intakeMotor.setNeutralMode(NeutralMode.Brake);
-        intakeMotor.setInverted(false);
-        intakeMotor.setStatusFramePeriod(1, 255);
-        intakeMotor.setStatusFramePeriod(2, 254);
-        intakeMotor.setStatusFramePeriod(3, 253);
-        intakeMotor.setStatusFramePeriod(4, 252);
-        intakeMotor.setStatusFramePeriod(8, 251);
-        intakeMotor.setStatusFramePeriod(10, 250);
-        intakeMotor.setStatusFramePeriod(12, 249);
-        intakeMotor.setStatusFramePeriod(13, 248);
-        intakeMotor.setStatusFramePeriod(14, 247);
-        intakeMotor.setStatusFramePeriod(21, 246);
+        intakeMotor = new TalonFX(21);
+        intakeMotorConfigs = new TalonFXConfiguration();
+        intakeMotorConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        intakeMotorConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
+        // FIXME: What does this do, and how to replicate in Phoenix 6 via StatusSignal
+        // intakeMotor.setStatusFramePeriod(Status_1_General, 255);
+        // intakeMotor.setStatusFramePeriod(Status_2_Feedback0, 254);
+        // intakeMotor.setStatusFramePeriod(Status_3_Quadrature, 253);
+        // intakeMotor.setStatusFramePeriod(Status_4_AinTempVbat, 252);
+        // intakeMotor.setStatusFramePeriod(Status_8_PulseWidth, 251);
+        // intakeMotor.setStatusFramePeriod(Status_10_Targets, 250);
+        // intakeMotor.setStatusFramePeriod(Status_12_Feedback1, 249);
+        // intakeMotor.setStatusFramePeriod(Status_13_Base_PIDF0, 248);
+        // intakeMotor.setStatusFramePeriod(Status_14_Turn_PIDF1, 247);
+        // intakeMotor.setStatusFramePeriod(Status_21_FeedbackIntegrated, 246);
+
+        intakeMotor.getConfigurator().apply(intakeMotorConfigs);
+
+        controlRequest = new DutyCycleOut(0.0);
         addChild("Intake Motor", intakeMotor);
     }
 
@@ -75,7 +85,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void setIntakeSpeed(double speed) {
-        intakeMotor.set(ControlMode.PercentOutput, speed);
+        intakeMotor.setControl(controlRequest.withOutput(speed));
     }
 
     public void setIntakeCommanded (boolean commanded) {
