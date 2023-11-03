@@ -219,7 +219,7 @@ public class RobotContainer {
   */
     //-Triggers
     // TriggerButton autoAimButton = new TriggerButton(controller0, .4, 'l');
-    // autoAimButton.whileActiveContinuous(new AutoTurretAim(mTurret, mClimb));
+    // autoAimButton.whileActiveContinuous(new AutoTurretAim(mTurret));
     // autoAimButton.whileActiveContinuous(new AutoLimelightHood(mTurret,
     // mShooterHood, cargoBallInterpolator));
     // autoAimButton.whileActiveContinuous(new AutoLimelightMainShooter(mTurret,
@@ -337,18 +337,7 @@ public class RobotContainer {
 
 
     
-      //-Other Buttons
-      
-      // JoystickButton climbModeOffButton = new JoystickButton(controller1,
-      // XboxController.Button.kBack.value);
-      // climbModeOffButton.whenPressed(new ClimbModeOff(mClimb, mIntake,
-      // mDrivetrain));
-
-      // JoystickButton climbModeOnButton = new JoystickButton(controller1,
-      // XboxController.Button.kStart.value);
-      // climbModeOnButton.whenPressed(new ClimbModeOn(mClimb, mIntakeDeploy, mIntake,
-      // mDrivetrain));
-      // climbModeOnButton.whenPressed(new MoveTurretToAngle(mTurret, 180));
+      // -Other Buttons
 
       // JoystickButton reverseIntakeButton = new JoystickButton(controller1, XboxController.Button.kRightStick.value);
       // reverseIntakeButton.whenPressed(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mTopLift, mIntakeDeploy, false));
