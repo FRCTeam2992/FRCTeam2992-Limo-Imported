@@ -219,6 +219,7 @@ public class RobotContainer {
       controller0.start().onTrue(new ResetGyro(mDrivetrain));
 
     } else {
+
   /*
   controller0 buttons
   */
@@ -240,48 +241,23 @@ public class RobotContainer {
             mShooter, mShooterHood, mTurret, mDrivetrain));
 
 
-      // JoystickButton panicIntakeButton1 = new JoystickButton(controller0, XboxController.Button.kRightBumper.value);
-      // panicIntakeButton1.whileHeld(new PanicIntake(mIntake, mIntakeDeploy, mBottomLift, mCargoFunnel));
+    controller0.rightBumper().whileTrue(new PanicIntake(mIntake, mIntakeDeploy, mBottomLift, mCargoFunnel));
 
-      controller0.rightBumper().onTrue(new SetSlowMode(mDrivetrain, true));
-      controller0.rightBumper().onFalse(new SetSlowMode(mDrivetrain, false));
-
-      // JoystickButton intakeOrientCameraButton = new JoystickButton(controller0, XboxController.Button.kLeftBumper.value);
+    controller0.leftBumper().onTrue(new SetSlowMode(mDrivetrain, true));
+    controller0.leftBumper().onFalse(new SetSlowMode(mDrivetrain, false));
 
     //-D-Pad
-    // POVButton xPatternButtonUp = new POVButton(controller0, 0);
-    // xPatternButtonUp.whenHeld(new SetSwerveAngleSafe(mDrivetrain, 45, -45, -45,
-    // 45));
-     
-    // POVButton xPatternButtonDown = new POVButton(controller0, 180);
-    // xPatternButtonDown.whenHeld(new SetSwerveAngleSafe(mDrivetrain, 45, -45, -45,
-    // 45));
-    // POVButton xPatternButtonLeft = new POVButton(controller0, 270);
-    // xPatternButtonLeft.whenHeld(new SetSwerveAngleSafe(mDrivetrain, 45, -45, -45,
-    // 45));
+    controller0.povUp().onTrue(new SetSwerveAngle(mDrivetrain, 45, -45, -45, 45));
+    controller0.povRight().onTrue(new SetSwerveAngle(mDrivetrain, 45, -45, -45, 45));
+    controller0.povDown().onTrue(new SetSwerveAngle(mDrivetrain, 45, -45, -45, 45));
+    controller0.povLeft().onTrue(new SetSwerveAngle(mDrivetrain, 45, -45, -45, 45));
 
-    // POVButton xPatternButtonRight = new POVButton(controller0, 90);
-    // xPatternButtonRight.whenPressed(new HomeIntakeDeploy(mIntakeDeploy));
     //-ABXY
-    controller0.povUp().onTrue(
-      new ChangeMainShooterSpeed(mShooter, 50)
-      .andThen(new ChangeSecondaryShooterSpeed(mShooter, 50))
-      .andThen(new StartShooter(mShooter)));
+    controller0.x().onTrue(new ChangeMainShooterSpeed(mShooter, -50));
+    controller0.y().onTrue(new ChangeMainShooterSpeed(mShooter, 50));
 
-    controller0.povDown().onTrue(
-      new ChangeMainShooterSpeed(mShooter, -50)
-      .andThen(new ChangeSecondaryShooterSpeed(mShooter, -50))
-      .andThen(new StartShooter(mShooter)));
-
-    // JoystickButton increaseSecondShooterSpeed = new JoystickButton(controller0,
-    // XboxController.Button.kX.value);
-    // increaseSecondShooterSpeed.whenPressed(new
-    // ChangeSecondaryShooterSpeed(mShooter, 50));
-
-    // JoystickButton decreaseSecondShooterSpeed = new JoystickButton(controller0,
-    // XboxController.Button.kA.value);
-    // decreaseSecondShooterSpeed.whenPressed(new
-    // ChangeSecondaryShooterSpeed(mShooter, -50));
+    controller0.a().onTrue(new ChangeSecondaryShooterSpeed(mShooter, -50));
+    controller0.b().onTrue(new ChangeSecondaryShooterSpeed(mShooter, 50));
 
     //-Other Buttons
     controller0.start().onTrue(new ResetGyro(mDrivetrain));
@@ -293,52 +269,30 @@ public class RobotContainer {
   controller1 Buttons
   */
     //-Triggers and Bumpers
-    controller0.leftTrigger(0.4).whileTrue(new DejamBallPath(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
+    controller1.rightTrigger(0.4).whileTrue(new DejamBallPath(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
 
-    // JoystickButton driverBPanicButton = new JoystickButton(controller1,
-    // XboxController.Button.kLeftBumper.value);
-    // driverBPanicButton.whileHeld(new PanicIntake(mIntake, mIntakeDeploy,
-    // mBottomLift, mCargoFunnel));
+    controller1.leftTrigger(0.4).whileTrue(new SetShooterSpeedTargets(mShooter, 1200, 0));
+    controller1.leftTrigger(0.4).whileTrue(new NewHoodTarget(mShooterHood, 152));
 
-    // TriggerButton highGoalShotButton = new TriggerButton(controller1, .3, 'l');
-    // highGoalShotButton.whileActiveContinuous(new NewHoodTarget(mShooterHood,
-    // -152));
-    // highGoalShotButton.whileActiveContinuous(new SetShooterSpeedTargets(mShooter,
-    // 1750, 2650));
-    // highGoalShotButton.whileActiveContinuous(new MoveTurretToAngle(mTurret,
-    // 0.0));
-      
-    // JoystickButton autoTrackHub = new JoystickButton(controller1,
-    // XboxController.Button.kRightBumper.value);
-    // // lowGoalShotButton.whileActiveOnce(new NewHoodTarget(mShooterHood, 152),
-    // true);
-    // // lowGoalShotButton.whileActiveOnce(new SetShooterSpeedTargets(mShooter,
-    // 1200, 0), true);
-    // // lowGoalShotButton.whileActiveOnce(new MoveTurretToAngle(mTurret, 180));
+    controller1.leftBumper().whileTrue(new NewHoodTarget(mShooterHood, -152));
+    controller1.leftBumper().whileTrue(new SetShooterSpeedTargets(mShooter, 1750, 2650));
+
+    controller1.rightBumper().whileTrue(new PanicIntake(mIntake, mIntakeDeploy, mBottomLift, mCargoFunnel));
+
       
     //-D-Pad
-    controller0.povLeft().whileTrue(new MoveHood(mShooterHood, .25));
-
-    controller0.povRight().whileTrue(new MoveHood(mShooterHood, -.25));
-
-    // POVButton moveTurretLeftButton = new POVButton(controller1, 270);
-    // moveTurretLeftButton.whileHeld(new MoveTurret(mTurret, -.30));
-
-    // POVButton moveTurretRightButton = new POVButton(controller1, 90);
-    // moveTurretRightButton.whileHeld(new MoveTurret(mTurret, .25));
-
+    controller1.povUp().whileTrue(new MoveHood(mShooterHood, .25));
+    controller1.povDown().whileTrue(new MoveHood(mShooterHood, -.25));
+    controller1.povLeft().whileTrue(new MoveTurret(mTurret, -.25));
+    controller1.povRight().whileTrue(new MoveTurret(mTurret, .25));
 
     //-ABXY
-    // controller0.x().onTrue(new InstantCommand(() -> mShooter.setMainShooterPower(0.65)));
-    controller0.x().onTrue(new StartShooter(mShooter));
+    controller1.x().onTrue(new StartShooter(mShooter));
+    controller1.y().onTrue(new StopShooter(mShooter));
 
-    controller0.a().onTrue(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy, true));
-      // autoIntakeButton.whenPressed(new ChangeIntakeState(mIntakeDeploy, true), true);
+    controller1.a().onTrue(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy, true));
+    controller1.b().onTrue(new StopAutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
 
-      controller0.b().onTrue(new StopAutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
-
-      // controller0.y().onTrue(new InstantCommand(() -> mShooter.setMainShooterPower(0.0)));
-      controller0.y().onTrue(new StopShooter(mShooter));
 
 
     
