@@ -71,7 +71,6 @@ public class RobotContainer {
 
   public final BottomLift mBottomLift;
   public final IntakeDeploy mIntakeDeploy;
-  public final Climb mClimb;
 
   // Joysticks
   public CommandXboxController controller0;
@@ -98,12 +97,9 @@ public class RobotContainer {
     // mIntake = new Intake();
     mDrivetrain = new Drivetrain();
     mDrivetrain.setDefaultCommand(new DriveSticks(mDrivetrain));
-         
-    mClimb = new Climb();
-    mClimb.setDefaultCommand(new ClimbSticks(mClimb, mDrivetrain));
 
     mTurret = new Turret(mDrivetrain);
-    mTurret.setDefaultCommand(new TurretSticks(mTurret, mClimb));
+    mTurret.setDefaultCommand(new TurretSticks(mTurret));
   
     mShooterHood = new ShooterHood();
     mShooterHood.setDefaultCommand(new HoldHoodAngle(mShooterHood, mTurret, cargoBallInterpolator ));
@@ -140,7 +136,6 @@ public class RobotContainer {
     SmartDashboard.putData(mDrivetrain);
     SmartDashboard.putData(mBottomLift);
     SmartDashboard.putData(mIntakeDeploy);
-    SmartDashboard.putData(mClimb);
 
     // SmartDashboard Buttons
     // SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
@@ -180,7 +175,7 @@ public class RobotContainer {
 
     if (Constants.isSingleController) {
       // Triggers
-      controller0.leftTrigger(0.4).whileTrue(new AutoTurretAim(mTurret, mClimb));
+      controller0.leftTrigger(0.4).whileTrue(new AutoTurretAim(mTurret));
       controller0.leftTrigger(0.4).whileTrue(new AutoLimelightHood(mTurret, mShooterHood, cargoBallInterpolator));
       controller0.leftTrigger(0.4).whileTrue(new AutoLimelightMainShooter(mTurret, mShooter, cargoBallInterpolator));
       controller0.leftTrigger(0.4).whileTrue(new AutoLimelightSecondShooter(mTurret, mShooter, cargoBallInterpolator));
@@ -231,7 +226,7 @@ public class RobotContainer {
     // mShooter, cargoBallInterpolator));
     // autoAimButton.whileActiveContinuous(new AutoLimelightSecondShooter(mTurret,
     // mShooter, cargoBallInterpolator));
-    controller0.leftTrigger(0.4).whileTrue(new AutoTurretAim(mTurret, mClimb));
+    controller0.leftTrigger(0.4).whileTrue(new AutoTurretAim(mTurret));
     controller0.leftTrigger(0.4).whileTrue(new AutoLimelightHood(mTurret, mShooterHood, cargoBallInterpolator));
     controller0.leftTrigger(0.4).whileTrue(new AutoLimelightMainShooter(mTurret, mShooter, cargoBallInterpolator));
     controller0.leftTrigger(0.4).whileTrue(new AutoLimelightSecondShooter(mTurret, mShooter, cargoBallInterpolator));

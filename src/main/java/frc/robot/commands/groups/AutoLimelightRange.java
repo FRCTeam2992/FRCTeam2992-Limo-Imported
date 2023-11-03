@@ -11,7 +11,6 @@ import frc.robot.commands.AutoLimelightMainShooter;
 import frc.robot.commands.AutoLimelightSecondShooter;
 import frc.robot.commands.AutoTurretAim;
 import frc.robot.commands.StartHood;
-import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterHood;
 import frc.robot.subsystems.Turret;
@@ -22,11 +21,11 @@ import frc.robot.subsystems.Turret;
 public class AutoLimelightRange extends ParallelCommandGroup {
   /** Creates a new AutoLimelightRange. */
   public AutoLimelightRange(ShooterHood mShooterHood, Shooter mShooter, Turret mTurret,
-      Climb mClimb, CargoBallInterpolator mInterpolator) {
+      CargoBallInterpolator mInterpolator) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoTurretAim(mTurret, mClimb),
+        new AutoTurretAim(mTurret),
       new StartHood(mShooterHood),
       new AutoLimelightHood(mTurret, mShooterHood, mInterpolator),
       new AutoLimelightMainShooter(mTurret, mShooter, mInterpolator),
