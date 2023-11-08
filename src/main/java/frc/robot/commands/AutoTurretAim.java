@@ -8,21 +8,18 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.lib.vision.LimeLight.LedMode;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Turret;
 
 public class AutoTurretAim extends CommandBase {
 
     private Turret mTurret;
-    private Climb mClimb;
 
     private double turretSetAngle = 0.0;
 
-    public AutoTurretAim(Turret subsystem, Climb climb) {
+    public AutoTurretAim(Turret subsystem) {
         addRequirements(subsystem);
 
         mTurret = subsystem;
-        mClimb = climb;
     }
 
     // Called just before this Command runs the first time
@@ -55,8 +52,7 @@ public class AutoTurretAim extends CommandBase {
             double targetAngle;
             double xyMagnitude = Math.sqrt((x * x) + (y * y));
 
-            // if (xyMagnitude >= Constants.turretJoystickDeadband &&
-            // !mClimb.getClimbMode()){
+            // if (xyMagnitude >= Constants.turretJoystickDeadband){
             // if(xyMagnitude > 1){
             // x /= xyMagnitude;
             // y /= xyMagnitude;

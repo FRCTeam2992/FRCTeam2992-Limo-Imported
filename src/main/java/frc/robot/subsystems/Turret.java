@@ -113,11 +113,12 @@ public class Turret extends SubsystemBase {
             }
 
         // Update Dashboard
-        // SmartDashboard.putNumber("Turret CanCoder Real", getCanCoderRealDegrees());
-        // SmartDashboard.putNumber("Turret RobotCentric Angle", angleOverlap(getTurretAngle()));
-        // SmartDashboard.putNumber("Turret Falcon Real", getFalconRealDegrees());
+        SmartDashboard.putNumber("Turret CanCoder Real", getCanCoderRealDegrees());
+        SmartDashboard.putNumber("Turret RobotCentric Angle", angleOverlap(getTurretAngle()));
+        SmartDashboard.putNumber("Turret Falcon Real", getFalconRealDegrees());
+        SmartDashboard.putNumber("Encoder degrees raw", turretEncoder.getAbsolutePosition());
         // SmartDashboard.putNumber("Turret Falcon Encoder Clicks", turretFalcon.getSelectedSensorPosition());
-        // SmartDashboard.putNumber("Turret Target", turretTargetAngle);
+        SmartDashboard.putNumber("Turret Target", turretTargetAngle);
         // SmartDashboard.putNumber("Camera Angle", limeLightCamera.getCameraAngle(Constants.distanceTest, Constants.cameraHeight, Constants.goalHeight));
         SmartDashboard.putNumber("Y-Offset", limeLightCamera.getTargetYOffset());
         SmartDashboard.putNumber("Distance", limeLightCamera.getDistanceToTarget(Constants.cameraAngle, Constants.cameraHeight, Constants.goalHeight));

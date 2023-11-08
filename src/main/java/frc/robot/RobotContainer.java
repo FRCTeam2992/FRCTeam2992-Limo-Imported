@@ -71,7 +71,6 @@ public class RobotContainer {
 
   public final BottomLift mBottomLift;
   public final IntakeDeploy mIntakeDeploy;
-  public final Climb mClimb;
 
   // Joysticks
   public CommandXboxController controller0;
@@ -98,12 +97,9 @@ public class RobotContainer {
     // mIntake = new Intake();
     mDrivetrain = new Drivetrain();
     mDrivetrain.setDefaultCommand(new DriveSticks(mDrivetrain));
-         
-    mClimb = new Climb();
-    mClimb.setDefaultCommand(new ClimbSticks(mClimb, mDrivetrain));
 
     mTurret = new Turret(mDrivetrain);
-    mTurret.setDefaultCommand(new TurretSticks(mTurret, mClimb));
+    mTurret.setDefaultCommand(new TurretSticks(mTurret));
   
     mShooterHood = new ShooterHood();
     mShooterHood.setDefaultCommand(new HoldHoodAngle(mShooterHood, mTurret, cargoBallInterpolator ));
@@ -140,7 +136,6 @@ public class RobotContainer {
     SmartDashboard.putData(mDrivetrain);
     SmartDashboard.putData(mBottomLift);
     SmartDashboard.putData(mIntakeDeploy);
-    SmartDashboard.putData(mClimb);
 
     // SmartDashboard Buttons
     // SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
@@ -180,7 +175,7 @@ public class RobotContainer {
 
     if (Constants.isSingleController) {
       // Triggers
-      controller0.leftTrigger(0.4).whileTrue(new AutoTurretAim(mTurret, mClimb));
+      controller0.leftTrigger(0.4).whileTrue(new AutoTurretAim(mTurret));
       controller0.leftTrigger(0.4).whileTrue(new AutoLimelightHood(mTurret, mShooterHood, cargoBallInterpolator));
       controller0.leftTrigger(0.4).whileTrue(new AutoLimelightMainShooter(mTurret, mShooter, cargoBallInterpolator));
       controller0.leftTrigger(0.4).whileTrue(new AutoLimelightSecondShooter(mTurret, mShooter, cargoBallInterpolator));
@@ -225,14 +220,14 @@ public class RobotContainer {
   */
     //-Triggers
     // TriggerButton autoAimButton = new TriggerButton(controller0, .4, 'l');
-    // autoAimButton.whileActiveContinuous(new AutoTurretAim(mTurret, mClimb));
+    // autoAimButton.whileActiveContinuous(new AutoTurretAim(mTurret));
     // autoAimButton.whileActiveContinuous(new AutoLimelightHood(mTurret,
     // mShooterHood, cargoBallInterpolator));
     // autoAimButton.whileActiveContinuous(new AutoLimelightMainShooter(mTurret,
     // mShooter, cargoBallInterpolator));
     // autoAimButton.whileActiveContinuous(new AutoLimelightSecondShooter(mTurret,
     // mShooter, cargoBallInterpolator));
-    controller0.leftTrigger(0.4).whileTrue(new AutoTurretAim(mTurret, mClimb));
+    controller0.leftTrigger(0.4).whileTrue(new AutoTurretAim(mTurret));
     controller0.leftTrigger(0.4).whileTrue(new AutoLimelightHood(mTurret, mShooterHood, cargoBallInterpolator));
     controller0.leftTrigger(0.4).whileTrue(new AutoLimelightMainShooter(mTurret, mShooter, cargoBallInterpolator));
     controller0.leftTrigger(0.4).whileTrue(new AutoLimelightSecondShooter(mTurret, mShooter, cargoBallInterpolator));
@@ -296,18 +291,7 @@ public class RobotContainer {
 
 
     
-      //-Other Buttons
-      
-      // JoystickButton climbModeOffButton = new JoystickButton(controller1,
-      // XboxController.Button.kBack.value);
-      // climbModeOffButton.whenPressed(new ClimbModeOff(mClimb, mIntake,
-      // mDrivetrain));
-
-      // JoystickButton climbModeOnButton = new JoystickButton(controller1,
-      // XboxController.Button.kStart.value);
-      // climbModeOnButton.whenPressed(new ClimbModeOn(mClimb, mIntakeDeploy, mIntake,
-      // mDrivetrain));
-      // climbModeOnButton.whenPressed(new MoveTurretToAngle(mTurret, 180));
+      // -Other Buttons
 
       // JoystickButton reverseIntakeButton = new JoystickButton(controller1, XboxController.Button.kRightStick.value);
       // reverseIntakeButton.whenPressed(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mTopLift, mIntakeDeploy, false));

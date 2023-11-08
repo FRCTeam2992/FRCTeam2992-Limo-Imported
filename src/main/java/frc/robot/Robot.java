@@ -54,7 +54,6 @@ public class Robot extends TimedRobot {
 
         mRobotContainer.mDrivetrain.navx.zeroYaw();
         mRobotContainer.mIntakeDeploy.initIntakeDeployMotor(0.0);
-        mRobotContainer.mClimb.resetClimbMotors();
 
         addPeriodic(() -> {
             mRobotContainer.mBottomLift.fastPeriodic();
