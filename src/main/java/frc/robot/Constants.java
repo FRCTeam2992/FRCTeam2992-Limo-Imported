@@ -28,7 +28,7 @@ public class Constants {
 
   // Single vs Double Controller mode
   // True = single controller mode
-  public static final boolean isSingleController = true;
+  public static final boolean isSingleController = false;
 
   //Intake Deploy Constants
   public static final double maxIntakeEncoderAngle = 50;

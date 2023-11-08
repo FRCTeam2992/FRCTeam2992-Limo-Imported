@@ -248,11 +248,11 @@ public class RobotContainer {
     controller0.povLeft().onTrue(new SetSwerveAngle(mDrivetrain, 45, -45, -45, 45));
 
     //-ABXY
-    controller0.x().onTrue(new ChangeMainShooterSpeed(mShooter, -50));
-    controller0.y().onTrue(new ChangeMainShooterSpeed(mShooter, 50));
+    controller0.x().onTrue(new ChangeMainShooterSpeed(mShooter, -50).andThen(new StartShooter(mShooter)));
+    controller0.y().onTrue(new ChangeMainShooterSpeed(mShooter, 50).andThen(new StartShooter(mShooter)));
 
-    controller0.a().onTrue(new ChangeSecondaryShooterSpeed(mShooter, -50));
-    controller0.b().onTrue(new ChangeSecondaryShooterSpeed(mShooter, 50));
+    controller0.a().onTrue(new ChangeSecondaryShooterSpeed(mShooter, -50).andThen(new StartShooter(mShooter)));
+    controller0.b().onTrue(new ChangeSecondaryShooterSpeed(mShooter, 50).andThen(new StartShooter(mShooter)));
 
     //-Other Buttons
     controller0.start().onTrue(new ResetGyro(mDrivetrain));
