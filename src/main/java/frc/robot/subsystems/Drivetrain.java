@@ -86,10 +86,6 @@ public class Drivetrain extends SubsystemBase {
   private double distanceTraveled; // How far we moved this cycle (meters)
   public double angleTurned; // How much did we rotate this cycle (degrees)
 
-  // NavX Pitch change (used by climb code)
-  double lastPitch = 0.0; // Pitch angle from prior cycle
-  double pitchChange = 0.0; // Change in pitch angle last cycle
-
   public boolean isPoseEstimation = false;
 
   // Swerve Drive Kinematics
@@ -525,14 +521,6 @@ public class Drivetrain extends SubsystemBase {
 
   public void setInSlowMode(boolean inSlowMode) {
     this.inSlowMode = inSlowMode;
-  }
-
-  public double getLastPitch() {
-    return lastPitch;
-  }
-
-  public double getPitchChange() {
-    return pitchChange;
   }
 
 }
