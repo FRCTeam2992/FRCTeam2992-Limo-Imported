@@ -282,8 +282,15 @@ public class RobotContainer {
     controller1.povRight().whileTrue(new MoveTurret(mTurret, .25));
 
     //-ABXY
-    controller1.x().onTrue(new StartShooter(mShooter));
-    controller1.y().onTrue(new StopShooter(mShooter));
+    // controller1.x().onTrue(new StartShooter(mShooter));
+    // controller1.y().onTrue(new StopShooter(mShooter));
+
+    controller1.x().onTrue(new ChangeMainShooterSpeed(mShooter, -100)
+        .andThen(new ChangeSecondaryShooterSpeed(mShooter, -100))
+        .andThen(new StartShooter(mShooter)));
+    controller1.y().onTrue(new ChangeMainShooterSpeed(mShooter, 100)
+        .andThen(new ChangeSecondaryShooterSpeed(mShooter, 100))
+        .andThen(new StartShooter(mShooter)));
 
     controller1.a().onTrue(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy, true));
     controller1.b().onTrue(new StopAutoIntake(mIntake, mCargoFunnel, mBottomLift, mIntakeDeploy));
@@ -292,6 +299,9 @@ public class RobotContainer {
 
     
       // -Other Buttons
+
+      controller1.leftStick().onTrue(new StartShooter(mShooter));
+      controller1.rightStick().onTrue(new StopShooter(mShooter));
 
       // JoystickButton reverseIntakeButton = new JoystickButton(controller1, XboxController.Button.kRightStick.value);
       // reverseIntakeButton.whenPressed(new AutoIntake(mIntake, mCargoFunnel, mBottomLift, mTopLift, mIntakeDeploy, false));
