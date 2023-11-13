@@ -28,7 +28,7 @@ public class Constants {
 
   // Single vs Double Controller mode
   // True = single controller mode
-  public static final boolean isSingleController = true;
+  public static final boolean isSingleController = false;
 
   //Intake Deploy Constants
   public static final double maxIntakeEncoderAngle = 50;
@@ -68,8 +68,8 @@ public class Constants {
   public static final double turretF = -0.02; // Need to push against CF spring in neg dir
   
   public static final double turretTolerance = 1.0;
-  public static final int turretEncoderOffset = -120;
-  public static final int turretRobotOffset = 120;
+  public static final int turretEncoderOffset = -12;
+  public static final int turretRobotOffset = 70;
   public static final int turretMinEnd = 35; // 45
   public static final int turretMaxEnd = 320; // 298
   public static final int turretMinRumble = 50; // 60
