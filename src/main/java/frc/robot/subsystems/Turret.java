@@ -82,7 +82,7 @@ public class Turret extends SubsystemBase {
         setTurretFalconEncoder();
 
         // LimeLight Camera
-        limeLightCamera = new LimeLight();
+        limeLightCamera = new LimeLight("limelight-left");
 
         mDrivetrain = drivetrain;
     }
@@ -124,7 +124,7 @@ public class Turret extends SubsystemBase {
         SmartDashboard.putNumber("Distance", limeLightCamera.getDistanceToTarget(Constants.cameraAngle, Constants.cameraHeight, Constants.goalHeight));
         SmartDashboard.putNumber("x-Offset", limeLightCamera.getTargetXOffset());
 
-        // SmartDashboard.putBoolean("LL Has Target", limeLightCamera.hasTarget());
+        SmartDashboard.putBoolean("LL Has Target", limeLightCamera.hasTarget());
         // SmartDashboard.putBoolean("Turret OnTarget", onTarget());
         // SmartDashboard.putBoolean("Turret AutoAim", isAutoAiming());
         // SmartDashboard.putBoolean("Turret Ready", readyToShoot());

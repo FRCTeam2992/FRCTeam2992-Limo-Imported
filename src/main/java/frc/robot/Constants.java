@@ -69,7 +69,7 @@ public class Constants {
   
   public static final double turretTolerance = 1.0;
 
-  public static final int turretEncoderOffset = -12;
+  public static final int turretEncoderOffset = -8;
   public static final int turretRobotOffset = 70;
 
   public static final int turretMinEnd = 35; // 45
@@ -115,7 +115,7 @@ public class Constants {
 
   
   // Field Geometry for Pose Esimation
-  public static double goalX = 8.23;          // Meters
+  public static double goalX = 8; // 8.23 // Meters
   public static double goalY = goalX / 2.0;   // Meters
   public static double goalRadius = .6096;     // Meters
   public static double limeLightOffset = 0.295;  // 11.593 inches = .295 meters
