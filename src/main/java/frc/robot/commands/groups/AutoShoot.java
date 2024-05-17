@@ -41,8 +41,8 @@ public class AutoShoot extends SequentialCommandGroup {
       // new DriveTrainStopped(mDrivetrain).withTimeout(0.5)
       ),      
     new ParallelCommandGroup(                       // OK TO shoot
-      new SpinCargoFunnel(mCargoFunnel, 0.45),
-      new SpinBottomLift(mBottomLift, .5)
+      new SpinCargoFunnel(mCargoFunnel, 0.35),
+      new SpinBottomLift(mBottomLift, .4)
       )
     );
   }
