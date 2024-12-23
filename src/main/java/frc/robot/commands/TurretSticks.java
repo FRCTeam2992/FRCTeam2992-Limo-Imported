@@ -10,20 +10,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Turret;
 
 public class TurretSticks extends CommandBase {
 
   private Turret mTurret;
 
-  private Climb mClimb;
-
   /** Creates a new TurretSticks. */
-  public TurretSticks(Turret turretSubsystem, Climb climbSubsystem) {
+  public TurretSticks(Turret turretSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     mTurret = turretSubsystem;
-    mClimb = climbSubsystem;
 
     addRequirements(turretSubsystem);
   }
@@ -45,7 +41,7 @@ public class TurretSticks extends CommandBase {
     double turned = Robot.mRobotContainer.mDrivetrain.angleTurned;
     double cycles = Math.max(Math.min(2.0 * Math.abs(turned * turned * turned), 15.0), 5.0);
 
-    if (xyMagnitude >= Constants.turretJoystickDeadband && !mClimb.getClimbMode()){
+    if (xyMagnitude >= Constants.turretJoystickDeadband) {
       if(xyMagnitude > 1){
         x /= xyMagnitude;
         y /= xyMagnitude;
@@ -65,7 +61,7 @@ public class TurretSticks extends CommandBase {
          mTurret.goToAngle(Turret.angleOverlap(targetAngle));
       }
       // SmartDashboard.putNumber("TurretStick output", targetAngle);
-  } else if (!mClimb.getClimbMode() && Robot.mRobotContainer.controller1.leftBumper().getAsBoolean()) {
+    } else if (Robot.mRobotContainer.controller1.leftBumper().getAsBoolean()) {
       mTurret.stopTurret();
       // Pose2d robotPose = Robot.mRobotContainer.mDrivetrain.swerveDrivePoseEstimator.getEstimatedPosition();
       // Transform2d toTarget = robotPose.minus(Constants.goalPose);
