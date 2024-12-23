@@ -15,13 +15,12 @@ package frc.robot;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -94,8 +93,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
-        mRobotContainer.mDrivetrain.setDriveNeutralMode(NeutralMode.Coast);
-        mRobotContainer.mDrivetrain.setTurnNeutralMode(NeutralMode.Coast);
+        mRobotContainer.mDrivetrain.setDriveNeutralMode(IdleMode.kCoast);
+        mRobotContainer.mDrivetrain.setTurnNeutralMode(IdleMode.kCoast);
         mRobotContainer.mBottomLift.setCommanded(false);
         mRobotContainer.mShooter.setShooterCommanded(false);
         mRobotContainer.mIntake.setIntakeCommanded(false);
@@ -118,11 +117,11 @@ public class Robot extends TimedRobot {
         // // schedule the autonomous command (example)
 
         // Set the Drive Train to Brake
-        mRobotContainer.mDrivetrain.setDriveNeutralMode(NeutralMode.Brake);
-        mRobotContainer.mDrivetrain.setTurnNeutralMode(NeutralMode.Brake);
+        mRobotContainer.mDrivetrain.setDriveNeutralMode(IdleMode.kBrake);
+        mRobotContainer.mDrivetrain.setTurnNeutralMode(IdleMode.kBrake);
 
         // Set the Drive Motors Current Limit
-        mRobotContainer.mDrivetrain.setDriveCurrentLimit(60.0, 60.0);
+        mRobotContainer.mDrivetrain.setDriveCurrentLimit(60, 60);
 
         // Set the Drive Motors Ramp Rate
         mRobotContainer.mDrivetrain.setDriveRampRate(0.0);
@@ -162,10 +161,10 @@ public class Robot extends TimedRobot {
             autoCommand.cancel();
         }
 
-        mRobotContainer.mDrivetrain.setDriveNeutralMode(NeutralMode.Brake);
-        mRobotContainer.mDrivetrain.setTurnNeutralMode(NeutralMode.Brake);
+        mRobotContainer.mDrivetrain.setDriveNeutralMode(IdleMode.kBrake);
+        mRobotContainer.mDrivetrain.setTurnNeutralMode(IdleMode.kBrake);
 
-        mRobotContainer.mDrivetrain.setDriveCurrentLimit(40.0, 40.0);
+        mRobotContainer.mDrivetrain.setDriveCurrentLimit(40, 40);
         mRobotContainer.mDrivetrain.setDriveRampRate(0.25);
 
         mRobotContainer.mDrivetrain.resetOdometry();

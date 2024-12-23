@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.lib.drive.swerve.SwerveModuleFalconFalcon;
+import frc.lib.drive.swerve.SwerveModuleNeoNeo;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
@@ -214,10 +214,10 @@ public class DriveStraightTimed extends CommandBase {
     //   }
 
       // Get the Swerve Modules
-      SwerveModuleFalconFalcon frontLeft = mDriveTrain.frontLeftModule;
-      SwerveModuleFalconFalcon frontRight = mDriveTrain.frontRightModule;
-      SwerveModuleFalconFalcon rearLeft = mDriveTrain.rearLeftModule;
-      SwerveModuleFalconFalcon rearRight = mDriveTrain.rearRightModule;
+      SwerveModuleNeoNeo frontLeft = mDriveTrain.frontLeftModule;
+      SwerveModuleNeoNeo frontRight = mDriveTrain.frontRightModule;
+      SwerveModuleNeoNeo rearLeft = mDriveTrain.rearLeftModule;
+      SwerveModuleNeoNeo rearRight = mDriveTrain.rearRightModule;
 
       // Command the Swerve Modules
       if (Constants.isVelocityControlled) {

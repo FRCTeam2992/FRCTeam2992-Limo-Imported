@@ -7,12 +7,13 @@ package frc.robot.subsystems;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Nat;
@@ -35,22 +36,35 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.drive.swerve.SwerveController;
 import frc.lib.drive.swerve.SwerveModuleFalconFalcon;
+import frc.lib.drive.swerve.SwerveModuleNeoNeo;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
 
   // Drive Motors
-  private WPI_TalonFX frontLeftDrive;
-  private WPI_TalonFX frontLeftTurn;
+  private CANSparkMax frontLeftDrive;
+  private CANSparkMax frontLeftTurn;
 
-  private WPI_TalonFX frontRightDrive;
-  private WPI_TalonFX frontRightTurn;
+  private CANSparkMax frontRightDrive;
+  private CANSparkMax frontRightTurn;
 
-  private WPI_TalonFX rearLeftDrive;
-  private WPI_TalonFX rearLeftTurn;
+  private CANSparkMax rearLeftDrive;
+  private CANSparkMax rearLeftTurn;
 
-  private WPI_TalonFX rearRightDrive;
-  private WPI_TalonFX rearRightTurn;
+  private CANSparkMax rearRightDrive;
+  private CANSparkMax rearRightTurn;
+
+  // private WPI_TalonFX frontLeftDrive;
+  // private WPI_TalonFX frontLeftTurn;
+
+  // private WPI_TalonFX frontRightDrive;
+  // private WPI_TalonFX frontRightTurn;
+
+  // private WPI_TalonFX rearLeftDrive;
+  // private WPI_TalonFX rearLeftTurn;
+
+  // private WPI_TalonFX rearRightDrive;
+  // private WPI_TalonFX rearRightTurn;
 
   // Swerve modules
 
@@ -67,10 +81,10 @@ public class Drivetrain extends SubsystemBase {
   private final PIDController rearRightController;
 
   // Swerve Modules
-  public final SwerveModuleFalconFalcon frontLeftModule;
-  public final SwerveModuleFalconFalcon frontRightModule;
-  public final SwerveModuleFalconFalcon rearLeftModule;
-  public final SwerveModuleFalconFalcon rearRightModule;
+  public final SwerveModuleNeoNeo frontLeftModule;
+  public final SwerveModuleNeoNeo frontRightModule;
+  public final SwerveModuleNeoNeo rearLeftModule;
+  public final SwerveModuleNeoNeo rearRightModule;
 
   // Swerve Controller
   public final SwerveController swerveController;
@@ -117,52 +131,68 @@ public class Drivetrain extends SubsystemBase {
 
   public Drivetrain() {
     // Drive Motors
-    frontRightDrive = new WPI_TalonFX(2);
+    frontRightDrive = new CANSparkMax(2, MotorType.kBrushless);
     frontRightDrive.setInverted(false);
+    // frontRightDrive = new WPI_TalonFX(2);
+    // frontRightDrive.setInverted(false);
     setMotorCANPeriods(frontRightDrive);
-    addChild("frontRightDrive", frontRightDrive);
+    // addChild("frontRightDrive", frontRightDrive);
 
-    frontRightTurn = new WPI_TalonFX(3);
+    frontRightTurn = new CANSparkMax(3, MotorType.kBrushless);
     frontRightTurn.setInverted(true);
+    // frontRightTurn = new WPI_TalonFX(3);
+    // frontRightTurn.setInverted(true);
     setMotorCANPeriods(frontRightTurn);
-    addChild("frontRightTurn", frontRightTurn);
+    // addChild("frontRightTurn", frontRightTurn);
 
-    frontLeftDrive = new WPI_TalonFX(4);
+    frontLeftDrive = new CANSparkMax(4, MotorType.kBrushless);
     frontLeftDrive.setInverted(false);
+    // frontLeftDrive = new WPI_TalonFX(4);
+    // frontLeftDrive.setInverted(false);
     setMotorCANPeriods(frontLeftDrive);
-    addChild("frontLeftDrive", frontLeftDrive);
+    // addChild("frontLeftDrive", frontLeftDrive);
 
-    frontLeftTurn = new WPI_TalonFX(5);
+    frontLeftTurn = new CANSparkMax(5, MotorType.kBrushless);
     frontLeftTurn.setInverted(true);
+    // frontLeftTurn = new WPI_TalonFX(5);
+    // frontLeftTurn.setInverted(true);
     setMotorCANPeriods(frontLeftTurn);
-    addChild("frontLeftTurn", frontLeftTurn);
+    // addChild("frontLeftTurn", frontLeftTurn);
 
-    rearRightDrive = new WPI_TalonFX(6);
+    rearRightDrive = new CANSparkMax(6, MotorType.kBrushless);
     rearRightDrive.setInverted(false);
+    // rearRightDrive = new WPI_TalonFX(6);
+    // rearRightDrive.setInverted(false);
     setMotorCANPeriods(rearRightDrive);
-    addChild("rearRightDrive", rearRightDrive);
+    // addChild("rearRightDrive", rearRightDrive);
 
-    rearRightTurn = new WPI_TalonFX(7);
+    rearRightTurn = new CANSparkMax(7, MotorType.kBrushless);
     rearRightTurn.setInverted(true);
+    // rearRightTurn = new WPI_TalonFX(7);
+    // rearRightTurn.setInverted(true);
     setMotorCANPeriods(rearRightTurn);
-    addChild("rearRightTurn", rearRightTurn);
+    // addChild("rearRightTurn", rearRightTurn);
 
-    rearLeftDrive = new WPI_TalonFX(8);
+    rearLeftDrive = new CANSparkMax(8, MotorType.kBrushless);
     rearLeftDrive.setInverted(false);
+    // rearLeftDrive = new WPI_TalonFX(8);
+    // rearLeftDrive.setInverted(false);
     setMotorCANPeriods(rearLeftDrive);
-    addChild("rearLeftDrive", rearLeftDrive);
+    // addChild("rearLeftDrive", rearLeftDrive);
 
-    rearLeftTurn = new WPI_TalonFX(9);
+    rearLeftTurn = new CANSparkMax(9, MotorType.kBrushless);
     rearLeftTurn.setInverted(true);
+    // rearLeftTurn = new WPI_TalonFX(9);
+    // rearLeftTurn.setInverted(true);
     setMotorCANPeriods(rearLeftTurn);
-    addChild("rearLeftTurn", rearLeftTurn);
+    // addChild("rearLeftTurn", rearLeftTurn);
 
     // Set motor states
-    setDriveNeutralMode(NeutralMode.Coast);
-    setTurnNeutralMode(NeutralMode.Brake);
+    setDriveNeutralMode(IdleMode.kCoast);
+    setTurnNeutralMode(IdleMode.kBrake);
 
-    setDriveCurrentLimit(40.0, 40.0);
-    setTurnCurrentLimit(60.0); // potentially unused
+    setDriveCurrentLimit(40, 60);
+    setTurnCurrentLimit(30, 60);
 
     // Drive Encoders
     frontRightEncoder = new CANCoder(3);
@@ -199,42 +229,87 @@ public class Drivetrain extends SubsystemBase {
     rearRightController.setTolerance(2.0);
 
     // Set the Drive PID Controllers
-    frontLeftDrive.config_kP(0, Constants.driveP);
-    frontLeftDrive.config_kI(0, Constants.driveI);
-    frontLeftDrive.config_kD(0, Constants.driveD);
-    frontLeftDrive.config_kF(0, Constants.driveF);
+    frontLeftDrive.getPIDController().setP(Constants.driveP);
+    frontLeftDrive.getPIDController().setI(Constants.driveI);
+    frontLeftDrive.getPIDController().setD(Constants.driveD);
+    frontLeftDrive.getPIDController().setFF(Constants.driveF);
+    // frontLeftDrive.config_kP(0, Constants.driveP);
+    // frontLeftDrive.config_kI(0, Constants.driveI);
+    // frontLeftDrive.config_kD(0, Constants.driveD);
+    // frontLeftDrive.config_kF(0, Constants.driveF);
 
-    frontRightDrive.config_kP(0, Constants.driveP);
-    frontRightDrive.config_kI(0, Constants.driveI);
-    frontRightDrive.config_kD(0, Constants.driveD);
-    frontRightDrive.config_kF(0, Constants.driveF);
+    frontRightDrive.getPIDController().setP(Constants.driveP);
+    frontRightDrive.getPIDController().setI(Constants.driveI);
+    frontRightDrive.getPIDController().setD(Constants.driveD);
+    frontRightDrive.getPIDController().setFF(Constants.driveF);
 
-    rearLeftDrive.config_kP(0, Constants.driveP);
-    rearLeftDrive.config_kI(0, Constants.driveI);
-    rearLeftDrive.config_kD(0, Constants.driveD);
-    rearLeftDrive.config_kF(0, Constants.driveF);
+    // frontRightDrive.config_kP(0, Constants.driveP);
+    // frontRightDrive.config_kI(0, Constants.driveI);
+    // frontRightDrive.config_kD(0, Constants.driveD);
+    // frontRightDrive.config_kF(0, Constants.driveF);
 
-    rearRightDrive.config_kP(0, Constants.driveP);
-    rearRightDrive.config_kI(0, Constants.driveI);
-    rearRightDrive.config_kD(0, Constants.driveD);
-    rearRightDrive.config_kF(0, Constants.driveF);
+    rearLeftDrive.getPIDController().setP(Constants.driveP);
+    rearLeftDrive.getPIDController().setI(Constants.driveI);
+    rearLeftDrive.getPIDController().setD(Constants.driveD);
+    rearLeftDrive.getPIDController().setFF(Constants.driveF);
+
+    // rearLeftDrive.config_kP(0, Constants.driveP);
+    // rearLeftDrive.config_kI(0, Constants.driveI);
+    // rearLeftDrive.config_kD(0, Constants.driveD);
+    // rearLeftDrive.config_kF(0, Constants.driveF);
+
+    rearRightDrive.getPIDController().setP(Constants.driveP);
+    rearRightDrive.getPIDController().setI(Constants.driveI);
+    rearRightDrive.getPIDController().setD(Constants.driveD);
+    rearRightDrive.getPIDController().setFF(Constants.driveF);
+
+    // rearRightDrive.config_kP(0, Constants.driveP);
+    // rearRightDrive.config_kI(0, Constants.driveI);
+    // rearRightDrive.config_kD(0, Constants.driveD);
+    // rearRightDrive.config_kF(0, Constants.driveF);
 
     // Swerve Modules
-    frontLeftModule = new SwerveModuleFalconFalcon(frontLeftDrive, frontLeftTurn, frontLeftEncoder,
-        Constants.frontLeftOffset, frontLeftController, Constants.driveWheelDiameter, Constants.driveGearRatio,
-        Constants.swerveMaxSpeed);
+    // Added New/Neo swerve objects
+    frontLeftModule = new SwerveModuleNeoNeo(frontLeftDrive, frontLeftTurn, frontLeftEncoder,
+            Constants.frontLeftOffset, frontLeftController, Constants.driveWheelDiameter, Constants.driveGearRatio,
+            Constants.swerveMaxSpeed);
 
-    frontRightModule = new SwerveModuleFalconFalcon(frontRightDrive, frontRightTurn, frontRightEncoder,
-        Constants.frontRightOffset, frontRightController, Constants.driveWheelDiameter, Constants.driveGearRatio,
-        Constants.swerveMaxSpeed);
+    frontRightModule = new SwerveModuleNeoNeo(frontRightDrive, frontRightTurn, frontRightEncoder,
+            Constants.frontRightOffset, frontRightController, Constants.driveWheelDiameter, Constants.driveGearRatio,
+            Constants.swerveMaxSpeed);
 
-    rearLeftModule = new SwerveModuleFalconFalcon(rearLeftDrive, rearLeftTurn, rearLeftEncoder,
-        Constants.rearLeftOffset,
-        rearLeftController, Constants.driveWheelDiameter, Constants.driveGearRatio, Constants.swerveMaxSpeed);
+    rearLeftModule = new SwerveModuleNeoNeo(rearLeftDrive, rearLeftTurn, rearLeftEncoder,
+            Constants.rearLeftOffset,
+            rearLeftController, Constants.driveWheelDiameter, Constants.driveGearRatio, Constants.swerveMaxSpeed);
 
-    rearRightModule = new SwerveModuleFalconFalcon(rearRightDrive, rearRightTurn, rearRightEncoder,
-        Constants.rearRightOffset, rearRightController, Constants.driveWheelDiameter, Constants.driveGearRatio,
-        Constants.swerveMaxSpeed);
+    rearRightModule = new SwerveModuleNeoNeo(rearRightDrive, rearRightTurn, rearRightEncoder,
+            Constants.rearRightOffset, rearRightController, Constants.driveWheelDiameter, Constants.driveGearRatio,
+            Constants.swerveMaxSpeed);
+
+    // Removed Falcon/Falcon swerve objectsdd
+    // frontLeftModule = new SwerveModuleFalconFalcon(frontLeftDrive, frontLeftTurn,
+    // frontLeftEncoder,
+    // Constants.frontLeftOffset, frontLeftController, Constants.driveWheelDiameter,
+    // Constants.driveGearRatio,
+    // Constants.swerveMaxSpeed);
+
+    // frontRightModule = new SwerveModuleFalconFalcon(frontRightDrive,
+    // frontRightTurn, frontRightEncoder,
+    // Constants.frontRightOffset, frontRightController,
+    // Constants.driveWheelDiameter, Constants.driveGearRatio,
+    // Constants.swerveMaxSpeed);
+
+    // rearLeftModule = new SwerveModuleFalconFalcon(rearLeftDrive, rearLeftTurn,
+    // rearLeftEncoder,
+    // Constants.rearLeftOffset,
+    // rearLeftController, Constants.driveWheelDiameter, Constants.driveGearRatio,
+    // Constants.swerveMaxSpeed);
+
+    // rearRightModule = new SwerveModuleFalconFalcon(rearRightDrive, rearRightTurn,
+    // rearRightEncoder,
+    // Constants.rearRightOffset, rearRightController, Constants.driveWheelDiameter,
+    // Constants.driveGearRatio,
+    // Constants.swerveMaxSpeed);
 
     // Swerve Controller
     swerveController = new SwerveController(Constants.swerveLength, Constants.swerveWidth);
@@ -361,48 +436,74 @@ public class Drivetrain extends SubsystemBase {
     // lastPitch = navx.getPitch();
   }
 
-  public void setDriveNeutralMode(NeutralMode mode) {
-    frontLeftDrive.setNeutralMode(mode);
-    frontRightDrive.setNeutralMode(mode);
-    rearLeftDrive.setNeutralMode(mode);
-    rearRightDrive.setNeutralMode(mode);
+  public void setDriveNeutralMode(IdleMode mode) {
+      frontLeftDrive.setIdleMode(mode);
+      frontRightDrive.setIdleMode(mode);
+      rearLeftDrive.setIdleMode(mode);
+      rearRightDrive.setIdleMode(mode);
   }
 
-  public void setTurnNeutralMode(NeutralMode mode) {
-    frontLeftTurn.setNeutralMode(mode);
-    frontRightTurn.setNeutralMode(mode);
-    rearLeftTurn.setNeutralMode(mode);
-    rearRightTurn.setNeutralMode(mode);
+  public void setTurnNeutralMode(IdleMode mode) {
+      frontLeftTurn.setIdleMode(mode);
+      frontRightTurn.setIdleMode(mode);
+      rearLeftTurn.setIdleMode(mode);
+      rearRightTurn.setIdleMode(mode);
   }
 
-  public void setDriveCurrentLimit(double currentLimit, double triggerCurrent) {
-    frontLeftDrive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, currentLimit, triggerCurrent, 0));
-    frontRightDrive
-        .configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, currentLimit, triggerCurrent, 0));
-    rearLeftDrive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, currentLimit, triggerCurrent, 0));
-    rearRightDrive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, currentLimit, triggerCurrent, 0));
+  public void setDriveCurrentLimit(int currentLimit, int triggerCurrent) {
+      frontLeftDrive.setSmartCurrentLimit(currentLimit);
+      frontLeftDrive.setSecondaryCurrentLimit(triggerCurrent);
+      frontRightDrive.setSmartCurrentLimit(currentLimit);
+      frontRightDrive.setSecondaryCurrentLimit(triggerCurrent);
+      rearLeftDrive.setSmartCurrentLimit(currentLimit);
+      rearLeftDrive.setSecondaryCurrentLimit(triggerCurrent);
+      rearRightDrive.setSmartCurrentLimit(currentLimit);
+      rearRightDrive.setSecondaryCurrentLimit(triggerCurrent);
+
+      // frontLeftDrive.configSupplyCurrentLimit(new
+      // SupplyCurrentLimitConfiguration(true, currentLimit, triggerCurrent, 0));
+      // frontRightDrive
+      // .configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true,
+      // currentLimit, triggerCurrent, 0));
+      // rearLeftDrive.configSupplyCurrentLimit(new
+      // SupplyCurrentLimitConfiguration(true, currentLimit, triggerCurrent, 0));
+      // rearRightDrive.configSupplyCurrentLimit(new
+      // SupplyCurrentLimitConfiguration(true, currentLimit, triggerCurrent, 0));
   }
 
   // seconds from idle to max speed
   public void setDriveRampRate(double seconds) {
     // Open loop ramp rates
-    frontLeftDrive.configOpenloopRamp(seconds);
-    frontRightDrive.configOpenloopRamp(seconds);
-    rearLeftDrive.configOpenloopRamp(seconds);
-    rearRightDrive.configOpenloopRamp(seconds);
+    frontLeftDrive.setOpenLoopRampRate(seconds);
+    frontRightDrive.setOpenLoopRampRate(seconds);
+    rearLeftDrive.setOpenLoopRampRate(seconds);
+    rearRightDrive.setOpenLoopRampRate(seconds);
 
     // Closed loop ramp rates
-    frontLeftDrive.configClosedloopRamp(seconds);
-    frontRightDrive.configClosedloopRamp(seconds);
-    rearLeftDrive.configClosedloopRamp(seconds);
-    rearRightDrive.configClosedloopRamp(seconds);
+    frontLeftDrive.setClosedLoopRampRate(seconds);
+    frontRightDrive.setClosedLoopRampRate(seconds);
+    rearLeftDrive.setClosedLoopRampRate(seconds);
+    rearRightDrive.setClosedLoopRampRate(seconds);
   }
 
-  public void setTurnCurrentLimit(double current) {
-    frontLeftTurn.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, current, current, 0));
-    frontRightTurn.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, current, current, 0));
-    rearLeftTurn.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, current, current, 0));
-    rearRightTurn.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, current, current, 0));
+  public void setTurnCurrentLimit(int currentLimit, int triggerCurrent) {
+      frontLeftTurn.setSmartCurrentLimit(currentLimit);
+      frontLeftTurn.setSecondaryCurrentLimit(triggerCurrent);
+      frontRightTurn.setSmartCurrentLimit(currentLimit);
+      frontRightTurn.setSecondaryCurrentLimit(triggerCurrent);
+      rearLeftTurn.setSmartCurrentLimit(currentLimit);
+      rearLeftTurn.setSecondaryCurrentLimit(triggerCurrent);
+      rearRightTurn.setSmartCurrentLimit(currentLimit);
+      rearRightTurn.setSecondaryCurrentLimit(triggerCurrent);
+
+      // frontLeftTurn.configSupplyCurrentLimit(new
+      // SupplyCurrentLimitConfiguration(true, current, current, 0));
+      // frontRightTurn.configSupplyCurrentLimit(new
+      // SupplyCurrentLimitConfiguration(true, current, current, 0));
+      // rearLeftTurn.configSupplyCurrentLimit(new
+      // SupplyCurrentLimitConfiguration(true, current, current, 0));
+      // rearRightTurn.configSupplyCurrentLimit(new
+      // SupplyCurrentLimitConfiguration(true, current, current, 0));
   }
 
   public void stopDrive() {
@@ -499,12 +600,13 @@ public class Drivetrain extends SubsystemBase {
 
   }
 
-  private void setMotorCANPeriods(WPI_TalonFX motor) {
-    motor.setStatusFramePeriod(1, 100); // Applied Motor Output
-    // Don't change frame type 2 -- Selected Sensor position needed for Odometry
-    // Don't change frame type 3 -- Quadrature info -- is needed?
-    motor.setStatusFramePeriod(4, 255); // Analog and battery voltage info
-    motor.setStatusFramePeriod(8, 254); // PWM Info not used
+  private void setMotorCANPeriods(CANSparkMax motor) {
+      motor.setControlFramePeriodMs(20);
+      // motor.setStatusFramePeriod(1, 100); // Applied Motor Output
+      // // Don't change frame type 2 -- Selected Sensor position needed for Odometry
+      // // Don't change frame type 3 -- Quadrature info -- is needed?
+      // motor.setStatusFramePeriod(4, 255); // Analog and battery voltage info
+      // motor.setStatusFramePeriod(8, 254); // PWM Info not used
   }
 
   public double getDistanceTraveled() {
