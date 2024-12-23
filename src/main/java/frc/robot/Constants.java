@@ -150,15 +150,30 @@ public class Constants {
   public static final double rearRightOffset = 123.92; // -24.521484375;
 
   // Swerve Drive PID (Velocity Control)
-  public static final double driveP = 0.05;
+
+  // Restore old Neo constants from Dizzy for now
+  public static final double driveP = 0.0003;
   public static final double driveI = 0.0;
   public static final double driveD = 0.01;
-  public static final double driveF = 0.047;
+  public static final double driveF = 0.0002;
+
+  // Constants used with Falcons
+  // public static final double driveP = 0.05;
+  // public static final double driveI = 0.0;
+  // public static final double driveD = 0.01;
+  // public static final double driveF = 0.047;
 
   // Swerve Turn PIDs
-  public static final double turnP = 0.0045; //.013
+
+  // Restore old constants from Dizzy for now
+  public static final double turnP = 0.008; // .013
   public static final double turnI = 0.0;
   public static final double turnD = 0.00005;
+
+  // Constants used w/ Falcons
+  // public static final double turnP = 0.0045; //.013
+  // public static final double turnI = 0.0;
+  // public static final double turnD = 0.00005;
   
   
 
