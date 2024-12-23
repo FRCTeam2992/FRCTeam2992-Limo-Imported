@@ -7,11 +7,15 @@ package frc.robot.subsystems;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.CANcoderConfigurator;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.MatBuilder;
@@ -40,25 +44,32 @@ import frc.robot.Constants;
 public class Drivetrain extends SubsystemBase {
 
   // Drive Motors
-  private WPI_TalonFX frontLeftDrive;
-  private WPI_TalonFX frontLeftTurn;
+  private TalonFX frontLeftDrive;
+  private TalonFX frontLeftTurn;
 
-  private WPI_TalonFX frontRightDrive;
-  private WPI_TalonFX frontRightTurn;
+  private TalonFX frontRightDrive;
+  private TalonFX frontRightTurn;
 
-  private WPI_TalonFX rearLeftDrive;
-  private WPI_TalonFX rearLeftTurn;
+  private TalonFX rearLeftDrive;
+  private TalonFX rearLeftTurn;
 
-  private WPI_TalonFX rearRightDrive;
-  private WPI_TalonFX rearRightTurn;
+  private TalonFX rearRightDrive;
+  private TalonFX rearRightTurn;
+
+  // Motor Configs
+  private TalonFXConfiguration driveMotorConfig;
+  private TalonFXConfiguration turnMotorConfig;
+
+  // CanCoder Configs
+  private CANcoderConfiguration canCoderConfig;
 
   // Swerve modules
 
   // Module CAN Encoders
-  private final CANCoder frontLeftEncoder;
-  private final CANCoder frontRightEncoder;
-  private final CANCoder rearLeftEncoder;
-  private final CANCoder rearRightEncoder;
+  private final CANcoder frontLeftEncoder;
+  private final CANcoder frontRightEncoder;
+  private final CANcoder rearLeftEncoder;
+  private final CANcoder rearRightEncoder;
 
   // Turn PID Controllers
   private final PIDController frontLeftController;
@@ -116,70 +127,66 @@ public class Drivetrain extends SubsystemBase {
   private boolean inSlowMode = false;
 
   public Drivetrain() {
+
+    driveMotorConfig = createDriveMotorConfig();
+    turnMotorConfig = createTurnMotorConfig();
     // Drive Motors
-    frontRightDrive = new WPI_TalonFX(2);
-    frontRightDrive.setInverted(false);
+    frontRightDrive = new TalonFX(2);
+    frontRightDrive.getConfigurator().apply(driveMotorConfig);
     setMotorCANPeriods(frontRightDrive);
     addChild("frontRightDrive", frontRightDrive);
 
-    frontRightTurn = new WPI_TalonFX(3);
-    frontRightTurn.setInverted(true);
+    frontRightTurn = new TalonFX(3);
+    frontRightTurn.getConfigurator().apply(turnMotorConfig);
     setMotorCANPeriods(frontRightTurn);
     addChild("frontRightTurn", frontRightTurn);
 
-    frontLeftDrive = new WPI_TalonFX(4);
-    frontLeftDrive.setInverted(false);
+    frontLeftDrive = new TalonFX(4);
+    frontLeftDrive.getConfigurator().apply(driveMotorConfig);
     setMotorCANPeriods(frontLeftDrive);
     addChild("frontLeftDrive", frontLeftDrive);
 
-    frontLeftTurn = new WPI_TalonFX(5);
-    frontLeftTurn.setInverted(true);
+    frontLeftTurn = new TalonFX(5);
+    frontLeftTurn.getConfigurator().apply(turnMotorConfig);
     setMotorCANPeriods(frontLeftTurn);
     addChild("frontLeftTurn", frontLeftTurn);
 
-    rearRightDrive = new WPI_TalonFX(6);
-    rearRightDrive.setInverted(false);
+    rearRightDrive = new TalonFX(6);
+    rearRightDrive.getConfigurator().apply(driveMotorConfig);
     setMotorCANPeriods(rearRightDrive);
     addChild("rearRightDrive", rearRightDrive);
 
-    rearRightTurn = new WPI_TalonFX(7);
-    rearRightTurn.setInverted(true);
+    rearRightTurn = new TalonFX(7);
+    rearRightTurn.getConfigurator().apply(turnMotorConfig);
     setMotorCANPeriods(rearRightTurn);
     addChild("rearRightTurn", rearRightTurn);
 
-    rearLeftDrive = new WPI_TalonFX(8);
-    rearLeftDrive.setInverted(false);
+    rearLeftDrive = new TalonFX(8);
+    rearLeftDrive.getConfigurator().apply(driveMotorConfig);
     setMotorCANPeriods(rearLeftDrive);
     addChild("rearLeftDrive", rearLeftDrive);
 
-    rearLeftTurn = new WPI_TalonFX(9);
-    rearLeftTurn.setInverted(true);
+    rearLeftTurn = new TalonFX(9);
+    rearLeftTurn.getConfigurator().apply(turnMotorConfig);
     setMotorCANPeriods(rearLeftTurn);
     addChild("rearLeftTurn", rearLeftTurn);
 
-    // Set motor states
-    setDriveNeutralMode(NeutralMode.Coast);
-    setTurnNeutralMode(NeutralMode.Brake);
-
-    setDriveCurrentLimit(40.0, 40.0);
-    setTurnCurrentLimit(60.0); // potentially unused
-
     // Drive Encoders
-    frontRightEncoder = new CANCoder(3);
-    frontRightEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-    frontRightEncoder.configSensorDirection(true);
+    canCoderConfig = new CANcoderConfiguration();
+    canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+    canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
 
-    frontLeftEncoder = new CANCoder(5);
-    frontLeftEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-    frontLeftEncoder.configSensorDirection(true);
+    frontRightEncoder = new CANcoder(3);
+    frontRightEncoder.getConfigurator().apply(canCoderConfig);
 
-    rearRightEncoder = new CANCoder(7);
-    rearRightEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-    rearRightEncoder.configSensorDirection(true);
+    frontLeftEncoder = new CANcoder(5);
+    frontLeftEncoder.getConfigurator().apply(canCoderConfig);
 
-    rearLeftEncoder = new CANCoder(9);
-    rearLeftEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-    rearLeftEncoder.configSensorDirection(true);
+    rearRightEncoder = new CANcoder(7);
+    rearRightEncoder.getConfigurator().apply(canCoderConfig);
+
+    rearLeftEncoder = new CANcoder(9);
+    rearLeftEncoder.getConfigurator().apply(canCoderConfig);
 
     // Turn PID Controllers
     frontLeftController = new PIDController(Constants.turnP, Constants.turnI, Constants.turnD);
@@ -199,25 +206,6 @@ public class Drivetrain extends SubsystemBase {
     rearRightController.setTolerance(2.0);
 
     // Set the Drive PID Controllers
-    frontLeftDrive.config_kP(0, Constants.driveP);
-    frontLeftDrive.config_kI(0, Constants.driveI);
-    frontLeftDrive.config_kD(0, Constants.driveD);
-    frontLeftDrive.config_kF(0, Constants.driveF);
-
-    frontRightDrive.config_kP(0, Constants.driveP);
-    frontRightDrive.config_kI(0, Constants.driveI);
-    frontRightDrive.config_kD(0, Constants.driveD);
-    frontRightDrive.config_kF(0, Constants.driveF);
-
-    rearLeftDrive.config_kP(0, Constants.driveP);
-    rearLeftDrive.config_kI(0, Constants.driveI);
-    rearLeftDrive.config_kD(0, Constants.driveD);
-    rearLeftDrive.config_kF(0, Constants.driveF);
-
-    rearRightDrive.config_kP(0, Constants.driveP);
-    rearRightDrive.config_kI(0, Constants.driveI);
-    rearRightDrive.config_kD(0, Constants.driveD);
-    rearRightDrive.config_kF(0, Constants.driveF);
 
     // Swerve Modules
     frontLeftModule = new SwerveModuleFalconFalcon(frontLeftDrive, frontLeftTurn, frontLeftEncoder,
@@ -361,48 +349,46 @@ public class Drivetrain extends SubsystemBase {
     // lastPitch = navx.getPitch();
   }
 
-  public void setDriveNeutralMode(NeutralMode mode) {
-    frontLeftDrive.setNeutralMode(mode);
-    frontRightDrive.setNeutralMode(mode);
-    rearLeftDrive.setNeutralMode(mode);
-    rearRightDrive.setNeutralMode(mode);
+  public TalonFXConfiguration createDriveMotorConfig() {
+    TalonFXConfiguration driveMotorConfigs = new TalonFXConfiguration();
+
+    driveMotorConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    driveMotorConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    driveMotorConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
+    driveMotorConfigs.CurrentLimits.SupplyCurrentLimit = 40.0;
+    driveMotorConfigs.CurrentLimits.SupplyCurrentThreshold = 40.0;
+    driveMotorConfigs.CurrentLimits.SupplyTimeThreshold = 0.0;
+    driveMotorConfigs.Slot0.kP = Constants.driveP;
+    driveMotorConfigs.Slot0.kI = Constants.driveI;
+    driveMotorConfigs.Slot0.kD = Constants.driveD;
+    driveMotorConfigs.Slot0.kV = Constants.driveF;
+
+    return driveMotorConfigs;
   }
 
-  public void setTurnNeutralMode(NeutralMode mode) {
-    frontLeftTurn.setNeutralMode(mode);
-    frontRightTurn.setNeutralMode(mode);
-    rearLeftTurn.setNeutralMode(mode);
-    rearRightTurn.setNeutralMode(mode);
-  }
+  public TalonFXConfiguration createTurnMotorConfig() {
+    TalonFXConfiguration turnMotorConfigs = new TalonFXConfiguration();
 
-  public void setDriveCurrentLimit(double currentLimit, double triggerCurrent) {
-    frontLeftDrive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, currentLimit, triggerCurrent, 0));
-    frontRightDrive
-        .configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, currentLimit, triggerCurrent, 0));
-    rearLeftDrive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, currentLimit, triggerCurrent, 0));
-    rearRightDrive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, currentLimit, triggerCurrent, 0));
+    turnMotorConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    turnMotorConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    turnMotorConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
+    turnMotorConfigs.CurrentLimits.SupplyCurrentLimit = 60.0;
+    turnMotorConfigs.CurrentLimits.SupplyCurrentThreshold = 60.0;
+    turnMotorConfigs.CurrentLimits.SupplyTimeThreshold = 0.0;
+    return turnMotorConfigs;
   }
 
   // seconds from idle to max speed
   public void setDriveRampRate(double seconds) {
     // Open loop ramp rates
-    frontLeftDrive.configOpenloopRamp(seconds);
-    frontRightDrive.configOpenloopRamp(seconds);
-    rearLeftDrive.configOpenloopRamp(seconds);
-    rearRightDrive.configOpenloopRamp(seconds);
+    driveMotorConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = seconds;
+    driveMotorConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = seconds;
 
-    // Closed loop ramp rates
-    frontLeftDrive.configClosedloopRamp(seconds);
-    frontRightDrive.configClosedloopRamp(seconds);
-    rearLeftDrive.configClosedloopRamp(seconds);
-    rearRightDrive.configClosedloopRamp(seconds);
-  }
+    frontLeftDrive.getConfigurator().apply(driveMotorConfig);
+    frontRightDrive.getConfigurator().apply(driveMotorConfig);
+    rearLeftDrive.getConfigurator().apply(driveMotorConfig);
+    rearRightDrive.getConfigurator().apply(driveMotorConfig);
 
-  public void setTurnCurrentLimit(double current) {
-    frontLeftTurn.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, current, current, 0));
-    frontRightTurn.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, current, current, 0));
-    rearLeftTurn.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, current, current, 0));
-    rearRightTurn.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, current, current, 0));
   }
 
   public void stopDrive() {
@@ -499,12 +485,12 @@ public class Drivetrain extends SubsystemBase {
 
   }
 
-  private void setMotorCANPeriods(WPI_TalonFX motor) {
-    motor.setStatusFramePeriod(1, 100); // Applied Motor Output
+  private void setMotorCANPeriods(TalonFX motor) {
+    // motor.setStatusFramePeriod(1, 100); // Applied Motor Output
     // Don't change frame type 2 -- Selected Sensor position needed for Odometry
     // Don't change frame type 3 -- Quadrature info -- is needed?
-    motor.setStatusFramePeriod(4, 255); // Analog and battery voltage info
-    motor.setStatusFramePeriod(8, 254); // PWM Info not used
+    // motor.setStatusFramePeriod(4, 255); // Analog and battery voltage info
+    // motor.setStatusFramePeriod(8, 254); // PWM Info not used
   }
 
   public double getDistanceTraveled() {

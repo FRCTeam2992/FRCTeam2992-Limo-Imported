@@ -1,8 +1,12 @@
 package frc.lib.drive.swerve;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.sensors.CANCoder;
+import java.util.ResourceBundle.Control;
+
+import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,14 +18,17 @@ public class SwerveModuleFalconFalcon {
     // Saved Variables
     private TalonFX driveMotor;
     private TalonFX turnMotor;
-    private CANCoder encoderInput;
+    private CANcoder encoderInput;
     private double encoderOffset;
     private double wheelDiameter;
     private double wheelGearRatio;
     private double maxDriveSpeed;
     private PIDController turnPID;
 
-    public SwerveModuleFalconFalcon(TalonFX driveMotor, TalonFX turnMotor, CANCoder encoderInput,
+    private DutyCycleOut percentOutputControlRequest;
+    private VelocityDutyCycle velocityControlRequest;
+
+    public SwerveModuleFalconFalcon(TalonFX driveMotor, TalonFX turnMotor, CANcoder encoderInput,
             double encoderOffset, PIDController turnPID, double wheelDiameter, double wheelGearRatio,
             double maxDriveSpeed) {
         // Saved Variables
@@ -33,14 +40,17 @@ public class SwerveModuleFalconFalcon {
         this.wheelDiameter = wheelDiameter;
         this.wheelGearRatio = wheelGearRatio;
         this.maxDriveSpeed = maxDriveSpeed;
+
+        percentOutputControlRequest = new DutyCycleOut(0.0);
+        velocityControlRequest = new VelocityDutyCycle(0.0);
     }
 
     public void setDriveSpeed(double speed) {
-        driveMotor.set(ControlMode.PercentOutput, speed);
+        driveMotor.setControl(percentOutputControlRequest.withOutput(speed));
     }
 
     public void setTurnSpeed(double speed) {
-        turnMotor.set(ControlMode.PercentOutput, speed);
+        turnMotor.setControl(percentOutputControlRequest.withOutput(speed));
     }
 
     public void stop() {
@@ -56,7 +66,7 @@ public class SwerveModuleFalconFalcon {
     public void setVelocityMeters(double speed) {
         double RPM = (speed * wheelGearRatio * 60) / (wheelDiameter * Math.PI);
 
-        driveMotor.set(ControlMode.Velocity, (RPM * 2048) / 600);
+        driveMotor.setControl(velocityControlRequest.withVelocity(RPM / 60.0));
     }
 
     public void setDrive(double speed, double angle) {
@@ -96,7 +106,7 @@ public class SwerveModuleFalconFalcon {
     }
 
     public double getEncoderAngle() {
-        double tempAngle = encoderInput.getAbsolutePosition() - encoderOffset;
+        double tempAngle = encoderInput.getAbsolutePosition().getValue() * 360.0 - encoderOffset;
 
         // Not sure if -180 adjust needed.  Not sure why this was here before
         //tempAngle += 180.0;
@@ -111,7 +121,7 @@ public class SwerveModuleFalconFalcon {
     }
 
     public double getWheelSpeedMeters() {
-        double RPM = (driveMotor.getSelectedSensorVelocity() * 600) / 2048;
+        double RPM = (driveMotor.getVelocity().getValue() * 60);
 
         double speed = (RPM * wheelDiameter * Math.PI) / (wheelGearRatio * 60);
 
